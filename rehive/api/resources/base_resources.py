@@ -5,7 +5,7 @@ import copy
 class Resource(object):
     def __init__(self, client, endpoint, filters=None):
         self.client = client
-        self.endpoint = endpoint
+        self.endpoint = endpoint + self.get_resource_name() + '/'
         self.filters = filters
         self.resource_identifier = ''
 
@@ -134,6 +134,9 @@ class ResourceList(Resource):
 
 
 class ResourceCollection(object):
+
+    def __init__(self):
+        self.create_resources(self.resources)
 
     def create_resources(self, resources):
         for resource in resources:
