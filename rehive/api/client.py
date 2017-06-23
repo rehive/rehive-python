@@ -49,7 +49,6 @@ class Client:
             self._session.mount('https://', adapter)
 
     def _request(self, method, path, data=None):
-        print(path)
         if self._session is None:
             self._create_session()
 
