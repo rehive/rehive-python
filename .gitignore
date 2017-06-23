@@ -1,6 +1,7 @@
 # Custom
 *.ipynb
 .DS_Store
+.pypirc
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
