@@ -30,8 +30,16 @@ class Resource(object):
         url = self._build_url(function)
         return self.client.patch(url, data)
 
+    def delete(self, function='', **kwargs):
+        data = kwargs
+        url = self._build_url(function)
+        return self.client.delete(url, data)
+
+    def update(self, function='', **kwargs):
+        return self.patch(function, **kwargs)
+
     def create(self, **kwargs):
-        self.post(**kwargs)
+        return self.post(**kwargs)
 
     # PRIVATE METHODS
     def _build_url(self, function=None):

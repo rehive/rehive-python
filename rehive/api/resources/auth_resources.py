@@ -1,65 +1,127 @@
-# TODO: REDO TO MATCH THE ADMIN STRUCTURE
-class AuthResources:
+from .base_resources import ResourceList, Resource, ResourceCollection
+
+
+class AuthResources(Resource, ResourceCollection):
 
     def __init__(self, client):
-        self.api = client
+        self.client = client
+        self.endpoint = ''
+        self.resources = (
+            APIAuthPassword,
+            APIAuthEmail,
+            APIAuthMobile,
+            APIAuthTokens
+        )
+        super(AuthResources, self).__init__(client, self.endpoint)
+        self.create_resources(self.resources)
 
-    def register(self, data):
-        response = self.api.post('auth/register/', data)
+    def login(self, user, company, password):
+        data = {
+            "user": user,
+            "company": company,
+            "password": password,
+        }
+        response = self.post(data, 'login')
         return response
 
-    def resgister_company(self, data):
-        response = self.api.post('auth/company/register/', data)
+    def register(self,
+                 first_name,
+                 last_name,
+                 email,
+                 company,
+                 password1,
+                 password2,
+                 **kwargs):
+        data = {
+           "first_name": first_name,
+           "last_name": last_name,
+           "email": email,
+           "company": company,
+           "password1": password1,
+           "password2": password2
+        }
+        response = self.post(data, 'register', **kwargs)
         return response
 
-    def login(self, data):
-        response = self.api.post('auth/login/', data)
-        return response
+    def logout(self):
+        self.client.token = None
+        return self.post({}, 'logout')
 
-    def logout(self, data):
-        response = self.api.post('auth/logout/', data)
-        return response
+    def logout_all(self):
+        self.client.token = None
+        return self.post({}, 'logout/all')
 
-    def logout_all(self, data):
-        response = self.api.post('auth/logout/', data)
-        return response
+    @classmethod
+    def get_resource_name(cls):
+        return 'auth'
 
-    def change_password(self, data):
-        response = self.api.post('auth/password/change/', data)
-        return response
 
-    def reset_password(self, data):
-        response = self.api.post('auth/password/reset/', data)
-        return response
+class APIAuthPassword(Resource):
 
-    def reset_password_confirm(self, data):
-        response = self.api.post('auth/password/reset/confirm/', data)
-        return response
+    def reset_password(self, user, company):
+        data = {
+            "user": user,
+            "password": password
+        }
+        return self.post(data, 'reset')
 
-    def resend_email_verification(self, data):
-        response = self.api.post('/auth/email/verify/resend/', data)
-        return response
+    def reset_confirm_password(self, new_password1, new_password2, uid, token):
+        data = {
+            "new_password1": new_password1,
+            "new_password2": new_password2,
+            "uid": uid,
+            "token": token
+        }
+        return self.post(data, 'reset/confirm')
 
-    def resend_mobile_verification(self, data):
-        response = self.api.post('/auth/mobile/verify/resend/', data)
-        return response
+    @classmethod
+    def get_resource_name(cls):
+        return 'password'
 
-    def verify_email(self, data):
-        response = self.api.post('/auth/email/verify/', data)
-        return response
 
-    def verify_mobile(self, data):
-        response = self.api.post('/auth/email/verify/', data)
-        return response
+class APIAuthEmail(Resource):
 
-    def get_tokens(self):
-        response = self.api.get('/auth/tokens/')
-        return response
+    def resend_email_verification(self, email, company):
+        data = {
+            "email": email,
+            "company": company
+        }
+        return self.post(data, 'verify/resend')
 
-    def create_permanent_token(self, data):
-        response = self.api.post('/auth/tokens/', data)
-        return response
+    @classmethod
+    def get_resource_name(cls):
+        return 'email'
 
-    def get_current_user(self):
-        response = self.api.get('user/')
-        return response
+
+class APIAuthMobile(Resource):
+
+    def resend_email_verification(self, mobile, company):
+        data = {
+            "mobile": mobile,
+            "company": company
+        }
+        return self.post(data, 'verify/resend')
+
+    def verify(self, otp):
+        data = {
+            "otp": otp
+        }
+        return self.post(data, 'verify')
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'mobile'
+
+
+class APIAuthTokens(Resource):
+
+    def create(self, password):
+        data = {"password": password}
+        return self.post(data)
+
+    def delete(self, token_key):
+        return super().delete(token_key)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'tokens'
