@@ -10,7 +10,7 @@ pip install rehive
 # Examples and How-to
 
 ```
-from rehive_sdk import Rehive
+from rehive import Rehive
 rehive = Rehive() 
 ```
 You can parse an api token or leave blank if manually logging in. Each object instance will store it's own token and act as another user.
