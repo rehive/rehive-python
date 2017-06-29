@@ -11,7 +11,7 @@ class Client:
     Interface for interacting with the rehive api
     """
     API_ENDPOINT = os.environ.get("REHIVE_API_V3_URL",
-                                  "https://staging.rehive.com/api/3/")
+                                  "https://rehive.com/api/3/")
 
     def __init__(self,
                  token=None,
