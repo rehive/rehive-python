@@ -9,8 +9,8 @@ class Resource(object):
         self.filters = filters
         self.resource_identifier = ''
 
-    def get(self, function=None):
-        url = self._build_url(function)
+    def get(self, function=None, **kwargs):
+        url = self._build_url(function, **kwargs)
         response = self.client.get(url)
         return response
 
@@ -42,14 +42,27 @@ class Resource(object):
         return self.post(**kwargs)
 
     # PRIVATE METHODS
-    def _build_url(self, function=None):
-        endpoint = self.endpoint + function if function else self.endpoint
-        endpoint = self._append_trailing_slash(endpoint)
-        if (self.resource_identifier is not None):
-            endpoint = endpoint + self.resource_identifier
-        endpoint = self._append_trailing_slash(endpoint)
-        url = endpoint + self.filters if self.filters else endpoint
-        return url
+    def _build_url(self, function=None, **kwargs):
+        # currently pagination should override all
+        if kwargs.get('pagination'):
+            endpoint = self.endpoint + kwargs.get('pagination')
+        else:
+            endpoint = self.endpoint + function if function else self.endpoint
+            endpoint = self._append_trailing_slash(endpoint)
+            if (self.resource_identifier is not None):
+                endpoint = endpoint + self.resource_identifier
+            endpoint = self._append_trailing_slash(endpoint)
+        if kwargs.get('filters'):
+            filters = kwargs.get('filters')
+            filters_string = self._build_query_filters(filters)
+            endpoint = endpoint + filters_string
+        return endpoint
+
+    def _build_query_filters(self, filters_dict, start_query=True):
+        filters = '?' if start_query else '&'
+        for name, value in filters_dict.items():
+            filters = filters + name + "=" + value + "&"
+        return filters
 
     def _put_or_patch_by_identifier(self,
                                     method,
@@ -95,20 +108,18 @@ class ResourceList(Resource):
         self.previous = None
         self.count = 0
 
-    def get(self, endpoint=None):
-        response = super().get(endpoint)
+    def get(self, endpoint=None, **kwargs):
+        response = super().get(endpoint, **kwargs)
         self._set_pagination(response)
         return response
 
-    def get_next(self):
-        url = self._build_pagination_url(self.next)
-        response = self.client.get(url)
+    def get_next(self, **kwargs):
+        response = super().get(pagination=self.next, **kwargs)
         self._set_pagination(response)
         return response
 
-    def get_previous(self):
-        url = self._build_pagination_url(self.previous)
-        response = self.client.get(url)
+    def get_previous(self, **kwargs):
+        response = super().get(pagination=self.previous, **kwargs)
         self._set_pagination(response)
         return response
 
