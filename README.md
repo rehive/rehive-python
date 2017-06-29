@@ -30,6 +30,11 @@ Get nested objects:
 rehive.admin.accounts.obj('5AT24mW61H').currencies.get()
 ```
 
+Get with filters:
+```
+rehive.admin.transactions.get(filters={"status":"confirmed"})
+```
+
 Create:
 ```
 rehive.admin.users.emails.create('1d3e584d-ac56-483c-8aa5-d4ef059608ba', 'connor+899@rehive.com', verified=True)
