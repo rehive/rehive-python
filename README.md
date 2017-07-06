@@ -11,7 +11,7 @@ pip install rehive
 
 ```
 from rehive import Rehive
-rehive = Rehive() 
+rehive = Rehive()  # OR Rehive(API_TOKEN_HERE)
 ```
 You can parse an api token or leave blank if manually logging in. Each object instance will store it's own token and act as another user.
 
@@ -28,6 +28,11 @@ rehive.admin.accounts.get()
 Get nested objects:
 ```
 rehive.admin.accounts.obj('5AT24mW61H').currencies.get()
+```
+
+Get with filters:
+```
+rehive.admin.transactions.get(filters={"status":"confirmed"})
 ```
 
 Create:
