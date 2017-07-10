@@ -8,32 +8,36 @@ class Resource(object):
         self.endpoint = endpoint + self.get_resource_name() + '/'
         self.filters = filters
         self.resource_identifier = ''
+        self.has_been_hydrated = False
 
     def get(self, function=None, **kwargs):
         url = self._build_url(function, **kwargs)
         response = self.client.get(url)
-        return response
+        return self._handle_resource_data(response)
 
     def post(self, data={}, function=None, **kwargs):
         data = {**data, **kwargs}
         url = self._build_url(function)
         response = self.client.post(url, data)
-        return response
+        return self._handle_resource_data(response)
 
     def put(self, function='', **kwargs):
         data = kwargs
         url = self._build_url(function)
-        return self.client.put(url, data)
+        response = self.client.put(url, data)
+        return self._handle_resource_data(response)
 
     def patch(self, function='', **kwargs):
         data = kwargs
         url = self._build_url(function)
-        return self.client.patch(url, data)
+        response = self.client.patch(url, data)
+        return self._handle_resource_data(response)
 
     def delete(self, function='', **kwargs):
         data = kwargs
         url = self._build_url(function)
-        return self.client.delete(url, data)
+        response = self.client.delete(url, data)
+        return self._handle_resource_data(response)
 
     def update(self, function='', **kwargs):
         return self.patch(function, **kwargs)
@@ -99,6 +103,14 @@ class Resource(object):
             'The resource should define its own string name'
         )
 
+    def _handle_resource_data(self, response):
+        return_data = response
+        if 'data' in response:
+            return_data = response.get('data')
+        self.has_been_hydrated = True
+
+        return return_data
+
 
 class ResourceList(Resource):
 
@@ -106,26 +118,33 @@ class ResourceList(Resource):
         super(ResourceList, self).__init__(client, endpoint, filters)
         self.next = None
         self.previous = None
-        self.count = 0
+        self._count = 0
 
     def get(self, endpoint=None, **kwargs):
-        response = super().get(endpoint, **kwargs)
-        self._set_pagination(response)
-        return response
+        url = self._build_url(endpoint, **kwargs)
+        response = self.client.get(url)
+        return self._handle_pagination_data(response)
 
     def get_next(self, **kwargs):
-        response = super().get(pagination=self.next, **kwargs)
-        self._set_pagination(response)
-        return response
+        url = self._build_url(pagination=self.next, **kwargs)
+        response = self.client.get(url)
+        return self._handle_pagination_data(response)
 
     def get_previous(self, **kwargs):
-        response = super().get(pagination=self.previous, **kwargs)
-        self._set_pagination(response)
-        return response
+        url = self._build_url(pagination=self.previous, **kwargs)
+        response = self.client.get(url)
+        return self._handle_pagination_data(response)
+
+    @property
+    def count(self):
+        if (self.has_been_hydrated is False):
+            self.get()
+        return self._count
 
     # PRIVATE METHODS
-    def _set_pagination(self, response):
+    def _handle_pagination_data(self, response):
         data = response.get('data')
+        return_data = data
         if 'next' in data:
             if data.get('next') is not None:
                 self.next = self._get_next_page_filter(data.get('next'))
@@ -137,7 +156,12 @@ class ResourceList(Resource):
             else:
                 self.previous = data.get('previous')
         if 'count' in data:
-            self.count = data.get('count')
+            self._count = data.get('count')
+        if 'results' in data:
+            return_data = data.get('results')
+        self.has_been_hydrated = True
+
+        return return_data
 
     def _get_next_page_filter(self, string):
         url_segments = string.split('/')
