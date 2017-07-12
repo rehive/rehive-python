@@ -10,7 +10,7 @@ pip install rehive
 # Examples and How-to
 
 ```
-from rehive import Rehive
+from rehive import Rehive, APIException
 rehive = Rehive()  # OR Rehive(API_TOKEN_HERE)
 ```
 You can parse an api token or leave blank if manually logging in. Each object instance will store it's own token and act as another user.
@@ -50,4 +50,17 @@ Pagination:
 rehive.admin.currencies.get()
 rehive.admin.currencies.get_next()
 rehive.admin.currencies.get_previous()
+```
+
+
+# Exception and error handling
+
+```
+from rehive import APIException
+
+try:
+  rehive.admin.currencies.get()
+exception APIException as e:
+  print(e.status_code) # Error code status code from Rehive
+  print(e.data) # Any custom error messages and data returned from Rehive
 ```
