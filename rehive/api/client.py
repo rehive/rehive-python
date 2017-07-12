@@ -3,7 +3,7 @@ import os
 import requests
 import json
 
-from .api_exception import APIException
+from .exception import APIException
 
 
 class Client:
@@ -55,7 +55,6 @@ class Client:
         url = self.API_ENDPOINT + path
         headers = self._get_headers()
 
-        # TODO Proper exception handling
         try:
             if data:
                 try:
@@ -69,7 +68,7 @@ class Client:
             else:
                 result = self._session.request(method, url, headers=headers)
 
-            if (result.status_code != 200 and result.status_code != 201):
+            if (result.status_code != requests.codes.ok):
                 if result.status_code == 404:
                     raise APIException('Not found', result.status_code)
 
@@ -83,6 +82,8 @@ class Client:
             raise Exception("Could not connect to Rehive.")
         except requests.exceptions.Timeout:
             raise Exception("Connection timed out.")
+        except requests.exceptions.RequestException:
+            raise Exception("General request error")
         except ValueError:
             if result:
                 raise ValueError(result.text)
