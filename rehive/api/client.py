@@ -100,11 +100,9 @@ class Client:
 
         # Check for token in response and set it for the current object
         if (json and 'data' in json and 'token' in json['data']):
-            self._set_token = json['data']['token']
-        return json
+            self.token = json['data']['token']
 
-    def _set_token(token):
-        self.token = token
+        return json
 
     def _get_headers(self):
         headers = {}
