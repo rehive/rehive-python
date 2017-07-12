@@ -1,13 +1,13 @@
-# rehive-python
-Python SDK for Rehive
+# Rehive Python SDK
+A tool primarly used for quick interfacing with the Rehive API.
 
 
-# Install
+## Install
 ```
 pip install rehive
 ```
 
-# Examples and How-to
+## Examples And How-to
 
 ```
 from rehive import Rehive, APIException
@@ -53,7 +53,7 @@ rehive.admin.currencies.get_previous()
 ```
 
 
-# Exception and error handling
+## Exception And Error Handling
 
 ```
 from rehive import APIException
