@@ -73,9 +73,12 @@ class Client:
                 if result.status_code == 404:
                     raise APIException('Not found', result.status_code)
 
-                data = result.json()
-                raise APIException(data.get('message', 'General error'),
-                                   result.status_code, data)
+                try:
+                    error_data = result.json()
+                    raise APIException(error_data.get('message', 'General error'),
+                                       result.status_code, error_data)
+                except:
+                    raise APIException('General error', result.status_code)
 
             response_json = self._handle_result(result)
             return response_json
