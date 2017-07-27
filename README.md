@@ -17,7 +17,11 @@ You can parse an api token or leave blank if manually logging in. Each object in
 
 Login:
 ```
-rehive.auth.login({"user": "user", "company": "company", "password": "pass"})
+rehive.auth.login(
+  user="test@rehive.com",
+  company="test_company",
+  password="12345678"
+)
 ```
 
 Get:
