@@ -95,7 +95,7 @@ class APIAuthEmail(Resource):
 
 class APIAuthMobile(Resource):
 
-    def resend_email_verification(self, mobile, company):
+    def resend_mobile_verification(self, mobile, company):
         data = {
             "mobile": mobile,
             "company": company
