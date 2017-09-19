@@ -260,7 +260,7 @@ class APIAdminLimits(ResourceList):
 
     def create(self, value, limit_type, tx_type, **kwargs):
         data = {
-            'value': name,
+            'value': value,
             'type': limit_type,
             'tx_type': tx_type
         }
