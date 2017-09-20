@@ -20,7 +20,7 @@ class Resource(object):
         request_kwargs = {}
         if 'file' in kwargs:
             request_kwargs['files'] = {
-                'file': open(kwargs.get('file'), 'rb')
+                'file': (open(kwargs.get('file'), 'rb'))
             }
             kwargs.pop('file', None)
         data = {**data, **kwargs}

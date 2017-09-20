@@ -72,7 +72,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminEmails,
             APIAdminMobiles,
             APIAdminCryptoAccounts,
-            APIAdminSwitches
+            APIAdminSwitches,
+            APIAdminDocuments
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
@@ -89,6 +90,22 @@ class APIAdminUsers(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'users'
+
+
+class APIAdminDocuments(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIDocuments, self).__init__(client, endpoint, filters)
+
+    def create(self, document_type, file, **kwargs):
+        return super().create(
+            document_type=document_type,
+            file=file,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'documents'
 
 
 class APIAdminEmails(ResourceList):
