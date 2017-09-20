@@ -68,17 +68,13 @@ class Client:
             else:
                 result = self._session.request(method, url, headers=headers)
 
-            if (result.status_code != requests.codes.ok and
-                    result.status_code != requests.codes.created):
+            if not result.ok:
                 if result.status_code == 404:
                     raise APIException('Not found: ' + url, result.status_code)
-
-                try:
-                    error_data = result.json()
-                    raise APIException(error_data.get('message', 'General error'),
-                                       result.status_code, error_data)
-                except:
-                    raise APIException('General error', result.status_code)
+                error_data = result.json()
+                raise APIException(error_data.get(
+                        'message', 'General error'),
+                        result.status_code, error_data)
 
             response_json = self._handle_result(result)
             return response_json
