@@ -188,7 +188,6 @@ class ResourceCollection(object):
                         resource.get_resource_name()),
                     resource(self.client, self.endpoint))
 
-    # Stop gap solution for my current single object problem
     def obj(self, resource_identifiter):
         return self.object(resource_identifiter)
 

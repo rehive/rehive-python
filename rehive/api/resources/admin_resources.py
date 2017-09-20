@@ -44,7 +44,8 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminLimits,
             APIAdminFees,
-            APIAdminSwitches
+            APIAdminSwitches,
+            APIAdminBankAccounts
         )
         super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
@@ -68,7 +69,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = {
             APIAdminEmails,
-            APIAdminMobiles
+            APIAdminMobiles,
+            APIAdminCryptoAccounts
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
@@ -292,7 +294,7 @@ class APIAdminTiers(ResourceList, ResourceCollection):
             APIAdminSwitches,
             APIAdminFees
         )
-        super(APIAdminCompany, self).__init__(client, endpoint, filters)
+        super(APIAdminTiers, self).__init__(client, endpoint, filters)
 
     def create(self, currency, **kwargs):
         data = {
@@ -307,7 +309,7 @@ class APIAdminTiers(ResourceList, ResourceCollection):
 
 class APIAdminRequirements(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        super(APIAdminCompany, self).__init__(client, endpoint, filters)
+        super(APIAdminRequirements, self).__init__(client, endpoint, filters)
 
     def create(self, requirement, **kwargs):
         data = {
@@ -318,3 +320,19 @@ class APIAdminRequirements(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'tiers'
+
+
+class APIAdminCryptoAccounts(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminCryptoAccounts, self).__init__(client, endpoint, filters)
+
+    def create(self, address, crypto_type, **kwargs):
+        return super().create(
+            address=address,
+            type=crypto_type,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'crypto-accounts'
