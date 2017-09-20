@@ -80,21 +80,11 @@ class Client:
             return response_json
 
         except requests.exceptions.ConnectionError:
-            raise Exception("Could not connect to Rehive.")
+            raise APIException("Could not connect to Rehive.")
         except requests.exceptions.Timeout:
-            raise Exception("Connection timed out.")
+            raise APIException("Connection timed out.")
         except requests.exceptions.RequestException:
-            raise Exception("General request error")
-        except ValueError:
-            if result:
-                raise ValueError(result.text)
-            else:
-                raise
-        except KeyError as e:
-            if result:
-                raise KeyError(result.text)
-            else:
-                raise
+            raise APIException("General request error")
 
     def _handle_result(self, result):
         json = result.json()
