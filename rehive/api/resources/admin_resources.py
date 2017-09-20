@@ -179,6 +179,7 @@ class APIAdminCompany(Resource, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (APIGeneralSwitches,)
         super(APIAdminCompany, self).__init__(client, endpoint, filters)
+        self.create_resources(self.resources)
 
     @classmethod
     def get_resource_name(cls):
@@ -215,13 +216,11 @@ class APIGeneralSwitches(APIAdminSwitches):
 
 class APIAdminWebhooks(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.client = client
-        self.endpoint = endpoint + self.get_resource_name() + '/'
         self.resources = (
             APIAdminTransactionWebhooks,
         )
-        self.create_resources(self.resources)
         super(APIAdminWebhooks, self).__init__(client, endpoint, filters)
+        self.create_resources(self.resources)
 
     def create(self, tx_type, url, **kwargs):
         data = {

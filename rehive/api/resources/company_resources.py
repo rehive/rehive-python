@@ -6,7 +6,7 @@ class APICompany(Resource, ResourceCollection):
         self.resources = (
             APIBanks,
             APICurrencies,
-            APIBankAccount
+            APIBankAccount,
         )
         super(APICompany, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
