@@ -12,7 +12,8 @@ class UserResources(Resource, ResourceCollection):
             APIUserMobiles,
             APIUserNotifications,
             APIBankAccounts,
-            APICryptoAccounts
+            APICryptoAccounts,
+            APIDocuments
         )
         super(UserResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -97,3 +98,19 @@ class APICryptoAccounts(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'crypto-accounts'
+
+
+class APIDocuments(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIDocuments, self).__init__(client, endpoint, filters)
+
+    def create(self, document_type, file, **kwargs):
+        return super().create(
+            document_type=document_type,
+            file=file,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'documents'

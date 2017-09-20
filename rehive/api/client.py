@@ -23,20 +23,20 @@ class Client:
         self._connection_pool_size = connection_pool_size
         self._session = None
 
-    def post(self, path, data):
-        return self._request('post', path, data)
+    def post(self, path, data, **kwargs):
+        return self._request('post', path, data, **kwargs)
 
-    def get(self, path):
-        return self._request('get', path)
+    def get(self, path, **kwargs):
+        return self._request('get', path, **kwargs)
 
-    def put(self, path, data):
-        return self._request('put', path, data)
+    def put(self, path, data, **kwargs):
+        return self._request('put', path, data, **kwargs)
 
-    def patch(self, path, data):
-        return self._request('patch', path, data)
+    def patch(self, path, data, **kwargs):
+        return self._request('patch', path, data, **kwargs)
 
-    def delete(self, path, data):
-        return self._request('delete', path)
+    def delete(self, path, data, **kwargs):
+        return self._request('delete', path, **kwargs)
 
     def _create_session(self):
         self._session = requests.Session()
@@ -48,7 +48,7 @@ class Client:
             self._session.mount('http://', adapter)
             self._session.mount('https://', adapter)
 
-    def _request(self, method, path, data=None):
+    def _request(self, method, path, data=None, **kwargs):
         if self._session is None:
             self._create_session()
 
@@ -57,16 +57,13 @@ class Client:
 
         try:
             if data:
-                try:
-                    data = json.dumps(data)
-                except:
-                    raise
                 result = self._session.request(method,
                                                url,
                                                headers=headers,
-                                               data=data)
+                                               json=data,
+                                               **kwargs)
             else:
-                result = self._session.request(method, url, headers=headers)
+                result = self._session.request(method, url, headers=headers, **kwargs)
 
             if not result.ok:
                 if result.status_code == 404:
