@@ -61,7 +61,7 @@ class APIAuthPassword(Resource):
     def reset_password(self, user, company):
         data = {
             "user": user,
-            "password": password
+            "company": company
         }
         return self.post(data, 'reset')
 
