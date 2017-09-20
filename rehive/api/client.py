@@ -71,7 +71,7 @@ class Client:
             if (result.status_code != requests.codes.ok and
                     result.status_code != requests.codes.created):
                 if result.status_code == 404:
-                    raise APIException('Not found', result.status_code)
+                    raise APIException('Not found: ' + url, result.status_code)
 
                 try:
                     error_data = result.json()

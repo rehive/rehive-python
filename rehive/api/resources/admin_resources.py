@@ -18,7 +18,7 @@ class AdminResources(ResourceCollection):
             APIAdminWebhooks,
             APIAdminSubtypes,
             APIAdminBankAccounts,
-            APIAdminGlobalSwitches
+            APIAdminSwitches
         )
         self.create_resources(self.resources)
 
@@ -70,7 +70,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
         self.resources = {
             APIAdminEmails,
             APIAdminMobiles,
-            APIAdminCryptoAccounts
+            APIAdminCryptoAccounts,
+            APIAdminSwitches
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
@@ -183,22 +184,6 @@ class APIAdminCompany(Resource, ResourceCollection):
         return 'company'
 
 
-class APIAdminGlobalSwitches(ResourceList):
-    def __init__(self, client, endpoint, filters=None):
-        super(APIAdminGlobalSwitches, self).__init__(client, endpoint, filters)
-
-    def create(self, switch_type, enabled=False, **kwargs):
-        data = {
-            'switch_type': switch_type,
-            'enabled': enabled
-        }
-        return self.post(data, **kwargs)
-
-    @classmethod
-    def get_resource_name(cls):
-        return 'switches'
-
-
 class APIAdminSwitches(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super(APIAdminSwitches, self).__init__(client, endpoint, filters)
@@ -215,8 +200,14 @@ class APIAdminSwitches(ResourceList):
         return 'switches'
 
 
-class APIAdminWebhooks(ResourceList):
+class APIAdminWebhooks(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
+        self.client = client
+        self.endpoint = endpoint + self.get_resource_name() + '/'
+        self.resources = (
+            APIAdminTransactionWebhooks,
+        )
+        self.create_resources(self.resources)
         super(APIAdminWebhooks, self).__init__(client, endpoint, filters)
 
     def create(self, tx_type, url, **kwargs):
@@ -229,6 +220,22 @@ class APIAdminWebhooks(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'webhooks'
+
+
+class APIAdminTransactionWebhooks(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminTransactionWebhooks, self).__init__(client, endpoint, filters)
+
+    def create(self, tx_type, url, **kwargs):
+        data = {
+            'tx_type': tx_type,
+            'url': url
+        }
+        return self.post(data, **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'transactions'
 
 
 class APIAdminSubtypes(ResourceList):
