@@ -61,7 +61,7 @@ class APIAuthPassword(Resource):
     def reset_password(self, user, company):
         data = {
             "user": user,
-            "password": password
+            "company": company
         }
         return self.post(data, 'reset')
 
@@ -73,6 +73,14 @@ class APIAuthPassword(Resource):
             "token": token
         }
         return self.post(data, 'reset/confirm')
+
+    def change(self, old_password, new_password1, new_password2):
+        data = {
+            "old_password": old_password,
+            "new_password1": new_password1,
+            "new_password2": new_password2
+        }
+        return self.post(data, 'change')
 
     @classmethod
     def get_resource_name(cls):

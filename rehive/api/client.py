@@ -68,37 +68,23 @@ class Client:
             else:
                 result = self._session.request(method, url, headers=headers)
 
-            if (result.status_code != requests.codes.ok and
-                    result.status_code != requests.codes.created):
+            if not result.ok:
                 if result.status_code == 404:
-                    raise APIException('Not found', result.status_code)
-
-                try:
-                    error_data = result.json()
-                    raise APIException(error_data.get('message', 'General error'),
-                                       result.status_code, error_data)
-                except:
-                    raise APIException('General error', result.status_code)
+                    raise APIException('Not found: ' + url, result.status_code)
+                error_data = result.json()
+                raise APIException(error_data.get(
+                        'message', 'General error'),
+                        result.status_code, error_data)
 
             response_json = self._handle_result(result)
             return response_json
 
         except requests.exceptions.ConnectionError:
-            raise Exception("Could not connect to Rehive.")
+            raise APIException("Could not connect to Rehive.")
         except requests.exceptions.Timeout:
-            raise Exception("Connection timed out.")
+            raise APIException("Connection timed out.")
         except requests.exceptions.RequestException:
-            raise Exception("General request error")
-        except ValueError:
-            if result:
-                raise ValueError(result.text)
-            else:
-                raise
-        except KeyError as e:
-            if result:
-                raise KeyError(result.text)
-            else:
-                raise
+            raise APIException("General request error")
 
     def _handle_result(self, result):
         json = result.json()

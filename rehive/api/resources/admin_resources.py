@@ -18,7 +18,8 @@ class AdminResources(ResourceCollection):
             APIAdminWebhooks,
             APIAdminSubtypes,
             APIAdminBankAccounts,
-            APIAdminGlobalSwitches
+            APIAdminSwitches,
+            APIAdminTiers,
         )
         self.create_resources(self.resources)
 
@@ -44,7 +45,8 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminLimits,
             APIAdminFees,
-            APIAdminSwitches
+            APIGeneralSwitches,
+            APIAdminBankAccounts
         )
         super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
@@ -68,7 +70,9 @@ class APIAdminUsers(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = {
             APIAdminEmails,
-            APIAdminMobiles
+            APIAdminMobiles,
+            APIAdminCryptoAccounts,
+            APIAdminSwitches
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
@@ -173,17 +177,18 @@ class APIAdminTransactions(ResourceList):
 
 class APIAdminCompany(Resource, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (APIAdminSwitches,)
+        self.resources = (APIGeneralSwitches,)
         super(APIAdminCompany, self).__init__(client, endpoint, filters)
+        self.create_resources(self.resources)
 
     @classmethod
     def get_resource_name(cls):
         return 'company'
 
 
-class APIAdminGlobalSwitches(ResourceList):
+class APIAdminSwitches(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        super(APIAdminGlobalSwitches, self).__init__(client, endpoint, filters)
+        super(APIAdminSwitches, self).__init__(client, endpoint, filters)
 
     def create(self, switch_type, enabled=False, **kwargs):
         data = {
@@ -197,9 +202,9 @@ class APIAdminGlobalSwitches(ResourceList):
         return 'switches'
 
 
-class APIAdminSwitches(ResourceList):
+class APIGeneralSwitches(APIAdminSwitches):
     def __init__(self, client, endpoint, filters=None):
-        super(APIAdminSwitches, self).__init__(client, endpoint, filters)
+        super(APIGeneralSwitches, self).__init__(client, endpoint, filters)
 
     def create(self, tx_type, enabled=False, **kwargs):
         data = {
@@ -208,14 +213,14 @@ class APIAdminSwitches(ResourceList):
         }
         return self.post(data, **kwargs)
 
-    @classmethod
-    def get_resource_name(cls):
-        return 'switches'
 
-
-class APIAdminWebhooks(ResourceList):
+class APIAdminWebhooks(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIAdminTransactionWebhooks,
+        )
         super(APIAdminWebhooks, self).__init__(client, endpoint, filters)
+        self.create_resources(self.resources)
 
     def create(self, tx_type, url, **kwargs):
         data = {
@@ -227,6 +232,22 @@ class APIAdminWebhooks(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'webhooks'
+
+
+class APIAdminTransactionWebhooks(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminTransactionWebhooks, self).__init__(client, endpoint, filters)
+
+    def create(self, tx_type, url, **kwargs):
+        data = {
+            'tx_type': tx_type,
+            'url': url
+        }
+        return self.post(data, **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'transactions'
 
 
 class APIAdminSubtypes(ResourceList):
@@ -289,10 +310,11 @@ class APIAdminFees(ResourceList):
 class APIAdminTiers(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
-            APIAdminSwitches,
-            APIAdminFees
+            APIGeneralSwitches,
+            APIAdminFees,
+            APIAdminRequirements
         )
-        super(APIAdminCompany, self).__init__(client, endpoint, filters)
+        super(APIAdminTiers, self).__init__(client, endpoint, filters)
 
     def create(self, currency, **kwargs):
         data = {
@@ -307,7 +329,7 @@ class APIAdminTiers(ResourceList, ResourceCollection):
 
 class APIAdminRequirements(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        super(APIAdminCompany, self).__init__(client, endpoint, filters)
+        super(APIAdminRequirements, self).__init__(client, endpoint, filters)
 
     def create(self, requirement, **kwargs):
         data = {
@@ -317,4 +339,20 @@ class APIAdminRequirements(ResourceList):
 
     @classmethod
     def get_resource_name(cls):
-        return 'tiers'
+        return 'requirements'
+
+
+class APIAdminCryptoAccounts(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminCryptoAccounts, self).__init__(client, endpoint, filters)
+
+    def create(self, address, crypto_type, **kwargs):
+        return super().create(
+            address=address,
+            type=crypto_type,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'crypto-accounts'
