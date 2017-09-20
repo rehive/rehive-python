@@ -184,7 +184,8 @@ class ResourceCollection(object):
     def create_resources(self, resources):
         for resource in resources:
             setattr(self,
-                    resource.get_resource_name(),
+                    self._sanitize_resource_name(
+                        resource.get_resource_name()),
                     resource(self.client, self.endpoint))
 
     # Stop gap solution for my current single object problem
@@ -197,3 +198,6 @@ class ResourceCollection(object):
         resource_object._set_endpoint(resource_object.endpoint + resource_object.resource_identifier)
         resource_object.create_resources(resource_object.resources)
         return resource_object
+
+    def _sanitize_resource_name(self, string):
+        return string.replace('-', '_')

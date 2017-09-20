@@ -10,7 +10,8 @@ class UserResources(Resource, ResourceCollection):
             APIUserAddress,
             APIUserEmail,
             APIUserMobiles,
-            APIUserNotifications
+            APIUserNotifications,
+            APIBankAccounts
         )
         super(UserResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -70,3 +71,12 @@ class APIUserNotifications(Resource):
     @classmethod
     def get_resource_name(cls):
         return 'notifications'
+
+
+class APIBankAccounts(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminBankAccounts, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'bank-accounts'
