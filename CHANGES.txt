@@ -7,6 +7,14 @@ This file will be added to as part of each release
 Version 0.4.0, Thu 21 Sep 2017
 ===============================
 
+876a9f1513	Version bump to 0.4.0 and updating CHANGES.txt (ConnorMac)
+2178f7d931	Moved version to version file and switched to seed instead of change (ConnorMac)
+db636421b4	Adding changes for version management (ConnorMac)
+
+
+Version 0.4.0, Thu 21 Sep 2017
+===============================
+
 2178f7d931	Moved version to version file and switched to seed instead of change (ConnorMac)
 db636421b4	Adding changes for version management (ConnorMac)
 
