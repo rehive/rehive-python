@@ -16,6 +16,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='rehive',
+    version=open('VERSION').read().strip(),
     description='Rehive SDK for Python',
     long_description=long_description,
     url='https://github.com/rehive/rehive-python',
