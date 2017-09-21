@@ -16,10 +16,10 @@ class Client:
     def __init__(self,
                  token=None,
                  connection_pool_size=0,
-                 API_ENDPOINT=API_ENDPOINT):
+                 api_endpoint_url=API_ENDPOINT):
 
         self.token = token
-        self.endpoint = API_ENDPOINT
+        self.endpoint = api_endpoint_url
         self._connection_pool_size = connection_pool_size
         self._session = None
 
@@ -52,7 +52,7 @@ class Client:
         if self._session is None:
             self._create_session()
 
-        url = self.API_ENDPOINT + path
+        url = self.endpoint + path
         headers = self._get_headers()
 
         try:
@@ -79,12 +79,12 @@ class Client:
             response_json = self._handle_result(result)
             return response_json
 
-        except requests.exceptions.ConnectionError:
-            raise APIException("Could not connect to Rehive.")
-        except requests.exceptions.Timeout:
-            raise APIException("Connection timed out.")
-        except requests.exceptions.RequestException:
-            raise APIException("General request error")
+        except requests.exceptions.ConnectionError as e:
+            raise APIException(str(e))
+        except requests.exceptions.Timeout as e:
+            raise APIException("Connection timed out.", None, str(e))
+        except requests.exceptions.RequestException as e:
+            raise APIException("General request error",  None, str(e))
 
     def _handle_result(self, result):
         json = result.json()
