@@ -4,6 +4,14 @@ This file will be added to as part of each release
 
 ----
 
+Version 0.4.1, Thu 19 Oct 2017
+===============================
+
+c1735eba61	Set patch/post statuses to lowercase (ConnorMac)
+a61df67ae9	Update README.md (Connor Macdougall)
+cc36d3ee0e	Removed changelog (ConnorMac)
+
+
 Version 0.4.0, Thu 21 Sep 2017
 ===============================
 
