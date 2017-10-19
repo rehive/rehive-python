@@ -64,7 +64,7 @@ from rehive import APIException
 
 try:
   rehive.admin.currencies.get()
-exception APIException as e:
+except APIException as e:
   print(e.status_code) # Error code status code from Rehive
   print(e.data) # Any custom error messages and data returned from Rehive
 ```
