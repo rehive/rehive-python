@@ -72,12 +72,6 @@ class Resource(object):
             endpoint = endpoint + '?' + filters_string
         return endpoint
 
-    def _build_query_filters(self, filters_dict, start_query=True):
-        filters = '?' if start_query else '&'
-        for name, value in filters_dict.items():
-            filters = filters + name + "=" + value + "&"
-        return filters
-
     def _put_or_patch_by_identifier(self,
                                     method,
                                     identifier,
