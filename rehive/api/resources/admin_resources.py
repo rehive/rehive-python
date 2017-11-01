@@ -100,6 +100,7 @@ class APIAdminDocuments(ResourceList):
         return super().create(
             document_type=document_type,
             file=file,
+            json=False,
             **kwargs
         )
 
