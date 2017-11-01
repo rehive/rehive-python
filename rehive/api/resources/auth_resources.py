@@ -10,7 +10,8 @@ class AuthResources(Resource, ResourceCollection):
             APIAuthPassword,
             APIAuthEmail,
             APIAuthMobile,
-            APIAuthTokens
+            APIAuthTokens,
+            APIAuthMFA
         )
         super(AuthResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -166,3 +167,31 @@ class APIAuthTokens(Resource):
     @classmethod
     def get_resource_name(cls):
         return 'tokens'
+
+
+class APIAuthMFA(Resource):
+
+    def authorize_number(self, mobile):
+        data = {
+            "mobile_number": mobile
+        }
+        return self.post(data, 'sms')
+
+    def send_sms(self, mobile):
+        data = {
+            "mobile_number": mobile
+        }
+        return self.post(data, 'sms/send')
+
+    def authorize_token(self, **kwargs):
+        return self.post({}, 'token', **kwargs)
+
+    def verify(self, token):
+        data = {
+            "token": token
+        }
+        return self.post(data, 'verify')
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'mfa'
