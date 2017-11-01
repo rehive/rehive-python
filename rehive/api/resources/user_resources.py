@@ -10,7 +10,6 @@ class UserResources(Resource, ResourceCollection):
             APIUserAddress,
             APIUserEmail,
             APIUserMobiles,
-            APIUserNotifications,
             APIBankAccounts,
             APICryptoAccounts,
             APIDocuments
@@ -54,25 +53,6 @@ class APIUserMobiles(Resource):
     @classmethod
     def get_resource_name(cls):
         return 'mobiles'
-
-
-class APIUserNotifications(Resource):
-
-    def enable_sms(self, id):
-        return self.update(id, sms_enabled=True)
-
-    def disable_sms(self, id):
-        return self.update(id, sms_enabled=False)
-
-    def enable_email(self, id):
-        return self.update(id, email_enabled=True)
-
-    def disable_email(self, id):
-        return self.update(id, email_enabled=False)
-
-    @classmethod
-    def get_resource_name(cls):
-        return 'notifications'
 
 
 class APIBankAccounts(ResourceList):

@@ -10,7 +10,8 @@ class AuthResources(Resource, ResourceCollection):
             APIAuthPassword,
             APIAuthEmail,
             APIAuthMobile,
-            APIAuthTokens
+            APIAuthTokens,
+            APIAuthMFA
         )
         super(AuthResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -43,6 +44,27 @@ class AuthResources(Resource, ResourceCollection):
         response = self.post(data, 'register', **kwargs)
         return response
 
+    def register_company(self,
+                         first_name,
+                         last_name,
+                         email,
+                         company,
+                         password1,
+                         password2,
+                         terms_and_conditions,
+                         **kwargs):
+            data = {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "company": company,
+                "password1": password1,
+                "password2": password2,
+                "terms_and_conditions": terms_and_conditions
+            }
+            response = self.post(data, 'company/register/', **kwargs)
+            return response
+
     def logout(self):
         self.client.token = None
         return self.post({}, 'logout')
@@ -65,7 +87,7 @@ class APIAuthPassword(Resource):
         }
         return self.post(data, 'reset')
 
-    def reset_confirm_password(self, new_password1, new_password2, uid, token):
+    def reset_password_confirm(self, new_password1, new_password2, uid, token):
         data = {
             "new_password1": new_password1,
             "new_password2": new_password2,
@@ -95,6 +117,12 @@ class APIAuthEmail(Resource):
             "company": company
         }
         return self.post(data, 'verify/resend')
+
+    def verify(self, key):
+        data = {
+            "key": key
+        }
+        return self.post(data, 'verify')
 
     @classmethod
     def get_resource_name(cls):
@@ -130,6 +158,40 @@ class APIAuthTokens(Resource):
     def delete(self, token_key):
         return super().delete(token_key)
 
+    def verify(self, token):
+        data = {
+            "token": token
+        }
+        return self.post(data, 'verify')
+
     @classmethod
     def get_resource_name(cls):
         return 'tokens'
+
+
+class APIAuthMFA(Resource):
+
+    def authorize_number(self, mobile):
+        data = {
+            "mobile_number": mobile
+        }
+        return self.post(data, 'sms')
+
+    def send_sms(self, mobile):
+        data = {
+            "mobile_number": mobile
+        }
+        return self.post(data, 'sms/send')
+
+    def authorize_token(self, **kwargs):
+        return self.post({}, 'token', **kwargs)
+
+    def verify(self, token):
+        data = {
+            "token": token
+        }
+        return self.post(data, 'verify')
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'mfa'
