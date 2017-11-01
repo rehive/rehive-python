@@ -16,9 +16,21 @@ class Resource(object):
         return self._handle_resource_data(response)
 
     def post(self, data={}, function=None, **kwargs):
+        # Allow us to parse through arbitrary request arguments
+        request_kwargs = {}
+        if 'file' in kwargs:
+            request_kwargs['files'] = {
+                'file': (open(kwargs.get('file'), 'rb'))
+            }
+            kwargs.pop('file', None)
+        # We need this flag to force non-json on file uploads
+        json = True
+        if 'json' in kwargs:
+            json = kwargs.get('json')
+            kwargs.pop('json', None)
         data = {**data, **kwargs}
         url = self._build_url(function)
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, json=json, **request_kwargs)
         return self._handle_resource_data(response)
 
     def put(self, function='', **kwargs):

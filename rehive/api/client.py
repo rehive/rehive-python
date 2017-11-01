@@ -23,20 +23,20 @@ class Client:
         self._connection_pool_size = connection_pool_size
         self._session = None
 
-    def post(self, path, data):
-        return self._request('post', path, data)
+    def post(self, path, data, json=True, **kwargs):
+        return self._request('post', path, data, json=json, **kwargs)
 
-    def get(self, path):
-        return self._request('get', path)
+    def get(self, path, **kwargs):
+        return self._request('get', path, **kwargs)
 
-    def put(self, path, data):
-        return self._request('put', path, data)
+    def put(self, path, data, **kwargs):
+        return self._request('put', path, data, **kwargs)
 
-    def patch(self, path, data):
-        return self._request('patch', path, data)
+    def patch(self, path, data, **kwargs):
+        return self._request('patch', path, data, **kwargs)
 
-    def delete(self, path, data):
-        return self._request('delete', path)
+    def delete(self, path, data, **kwargs):
+        return self._request('delete', path, **kwargs)
 
     def _create_session(self):
         self._session = requests.Session()
@@ -48,25 +48,28 @@ class Client:
             self._session.mount('http://', adapter)
             self._session.mount('https://', adapter)
 
-    def _request(self, method, path, data=None):
+    def _request(self, method, path, data=None, json=True, **kwargs):
         if self._session is None:
             self._create_session()
 
         url = self.endpoint + path
-        headers = self._get_headers()
+        headers = self._get_headers(json=json)
 
         try:
-            if data:
-                try:
-                    data = json.dumps(data)
-                except:
-                    raise
+            if (data and json):
                 result = self._session.request(method,
                                                url,
                                                headers=headers,
-                                               data=data)
+                                               json=data,
+                                               **kwargs)
+            elif (data and not json):
+                result = self._session.request(method,
+                                               url,
+                                               headers=headers,
+                                               data=data,
+                                               **kwargs)
             else:
-                result = self._session.request(method, url, headers=headers)
+                result = self._session.request(method, url, headers=headers, **kwargs)
 
             if not result.ok:
                 if result.status_code == 404:
@@ -95,9 +98,10 @@ class Client:
 
         return json
 
-    def _get_headers(self):
+    def _get_headers(self, json=True):
         headers = {}
-        headers['Content-Type'] = 'application/json'
+        if json:
+            headers['Content-Type'] = 'application/json'
         if self.token is not None:
             headers['Authorization'] = 'Token ' + str(self.token)
 
