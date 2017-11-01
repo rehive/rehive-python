@@ -4,6 +4,22 @@ This file will be added to as part of each release
 
 ----
 
+Version 0.5.0, Wed 01 Nov 2017
+===============================
+
+06d97ca50e	Fixed merge (ConnorMac)
+5021aea744	Added permissions and permissions groups (ConnorMac)
+c294b20ea9	Add json flag to allow document posts to use normal multpart form posts (ConnorMac)
+7af00c71c4	Removed notifications from user endpoint (ConnorMac)
+64d8942213	Added MFA endpoint and functions (ConnorMac)
+f2b277d0dd	Added token verify (ConnorMac)
+b971f30509	Added verify email endpoint (ConnorMac)
+bee0d3c853	Renamed reset_confirm_password (ConnorMac)
+f5a8f42a1b	Added company register (ConnorMac)
+1a547a31bb	Added documents to admin endpoint (ConnorMac)
+08f15ce337	Added document resource. Adjusted client to accept kwargs and moved to requests json arg. (ConnorMac)
+
+
 Version 0.4.1, Thu 19 Oct 2017
 ===============================
 
