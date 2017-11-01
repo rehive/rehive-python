@@ -20,6 +20,7 @@ class AdminResources(ResourceCollection):
             APIAdminBankAccounts,
             APIAdminSwitches,
             APIAdminTiers,
+            APIAdminPermissionGroups,
         )
         self.create_resources(self.resources)
 
@@ -46,7 +47,7 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
             APIAdminLimits,
             APIAdminFees,
             APIGeneralSwitches,
-            APIAdminBankAccounts
+            APIAdminBankAccounts,
         )
         super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
@@ -72,7 +73,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminEmails,
             APIAdminMobiles,
             APIAdminCryptoAccounts,
-            APIAdminSwitches
+            APIAdminSwitches,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
@@ -312,7 +313,7 @@ class APIAdminTiers(ResourceList, ResourceCollection):
         self.resources = (
             APIGeneralSwitches,
             APIAdminFees,
-            APIAdminRequirements
+            APIAdminRequirements,
         )
         super(APIAdminTiers, self).__init__(client, endpoint, filters)
 
@@ -356,3 +357,37 @@ class APIAdminCryptoAccounts(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'crypto-accounts'
+
+
+class APIAdminPermissions(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminPermissions, self).__init__(client, endpoint, filters)
+
+    def create(self, type, level, **kwargs):
+        return super().create(
+            type=type,
+            level=level,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'permissions'
+
+
+class APIAdminPermissionGroups(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIAdminPermissions,
+        )
+        super(APIAdminPermissionGroups, self).__init__(client, endpoint, filters)
+
+    def create(self, name, **kwargs):
+        return super().create(
+            name=name,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'permission-groups'
