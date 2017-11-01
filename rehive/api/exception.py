@@ -1,5 +1,5 @@
 class APIException(Exception):
-    def __init__(self, message, status_code, data=None):
+    def __init__(self, message, status_code=None, data=None):
 
         super(APIException, self).__init__(message)
 

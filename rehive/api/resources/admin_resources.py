@@ -154,13 +154,13 @@ class APIAdminTransactions(ResourceList):
         return super(APIAdminTransactions, self).patch(tx_code + '/', **data)
 
     def confirm(self, tx_code, **kwargs):
-        self.patch(tx_code, "Complete", **kwargs)
+        self.patch(tx_code, "complete", **kwargs)
 
     def fail(self, tx_code, **kwargs):
-        self.patch(tx_code, "Failed", **kwargs)
+        self.patch(tx_code, "failed", **kwargs)
 
     def delete(self, tx_code, **kwargs):
-        self.patch(tx_code, "Deleted", **kwargs)
+        self.patch(tx_code, "deleted", **kwargs)
 
     def create_credit(self, user, amount, **kwargs):
         data = {
