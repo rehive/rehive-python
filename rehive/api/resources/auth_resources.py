@@ -86,7 +86,7 @@ class APIAuthPassword(Resource):
         }
         return self.post(data, 'reset')
 
-    def reset_confirm_password(self, new_password1, new_password2, uid, token):
+    def reset_password_confirm(self, new_password1, new_password2, uid, token):
         data = {
             "new_password1": new_password1,
             "new_password2": new_password2,
