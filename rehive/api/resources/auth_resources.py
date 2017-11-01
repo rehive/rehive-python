@@ -157,6 +157,12 @@ class APIAuthTokens(Resource):
     def delete(self, token_key):
         return super().delete(token_key)
 
+    def verify(self, token):
+        data = {
+            "token": token
+        }
+        return self.post(data, 'verify')
+
     @classmethod
     def get_resource_name(cls):
         return 'tokens'
