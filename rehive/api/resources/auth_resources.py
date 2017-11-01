@@ -43,6 +43,27 @@ class AuthResources(Resource, ResourceCollection):
         response = self.post(data, 'register', **kwargs)
         return response
 
+    def register_company(self,
+                         first_name,
+                         last_name,
+                         email,
+                         company,
+                         password1,
+                         password2,
+                         terms_and_conditions,
+                         **kwargs):
+            data = {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "company": company,
+                "password1": password1,
+                "password2": password2,
+                "terms_and_conditions": terms_and_conditions
+            }
+            response = self.post(data, 'company/register/', **kwargs)
+            return response
+
     def logout(self):
         self.client.token = None
         return self.post({}, 'logout')
