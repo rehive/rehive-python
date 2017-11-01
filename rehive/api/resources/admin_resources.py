@@ -74,10 +74,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminMobiles,
             APIAdminCryptoAccounts,
             APIAdminSwitches,
-<<<<<<< HEAD
-            APIAdminDocuments
-=======
->>>>>>> master
+            APIAdminDocuments,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
