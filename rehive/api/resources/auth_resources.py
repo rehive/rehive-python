@@ -117,6 +117,12 @@ class APIAuthEmail(Resource):
         }
         return self.post(data, 'verify/resend')
 
+    def verify(self, key):
+        data = {
+            "key": key
+        }
+        return self.post(data, 'verify')
+
     @classmethod
     def get_resource_name(cls):
         return 'email'
