@@ -80,6 +80,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminOverview,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
+        self.create_resources(self.resources)
 
     def create(self, first_name, last_name, email, mobile_number):
         data = {
