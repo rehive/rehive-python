@@ -48,6 +48,7 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
             APIAdminFees,
             APIGeneralSwitches,
             APIAdminBankAccounts,
+            APIAdminOverview,
         )
         super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
@@ -76,7 +77,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminSwitches,
             APIAdminDocuments,
             APIAdminAddresses,
-            APIAdminUserOverview,
+            APIAdminOverview,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
@@ -137,9 +138,9 @@ class APIAdminAddresses(ResourceList):
         return 'addresses'
 
 
-class APIAdminUserOverview(ResourceList):
+class APIAdminOverview(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        super(APIAdminUserOverview, self).__init__(client, endpoint, filters)
+        super(APIAdminOverview, self).__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
