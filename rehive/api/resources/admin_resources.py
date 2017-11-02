@@ -76,6 +76,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminSwitches,
             APIAdminDocuments,
             APIAdminAddresses,
+            APIAdminUserOverview,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
 
@@ -134,6 +135,15 @@ class APIAdminAddresses(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'addresses'
+
+
+class APIAdminUserOverview(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminUserOverview, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'overview'
 
 
 class APIAdminMobiles(ResourceList):
