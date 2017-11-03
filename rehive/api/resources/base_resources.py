@@ -1,5 +1,8 @@
 import re
 import copy
+from urllib.parse import urlparse
+from urllib.parse import urljoin
+import urllib.parse
 
 
 class Resource(object):
@@ -61,24 +64,25 @@ class Resource(object):
     def _build_url(self, function=None, **kwargs):
         # currently pagination should override all
         if kwargs.get('pagination'):
-            endpoint = self.endpoint + kwargs.get('pagination')
+            endpoint = urllib.parse.urljoin(self.endpoint, kwargs.get('pagination'))
         else:
-            endpoint = self.endpoint + function if function else self.endpoint
+            if function:
+                endpoint = urllib.parse.urljoin(
+                    self.endpoint, function
+                )
+            else:
+                endpoint = self.endpoint
             endpoint = self._append_trailing_slash(endpoint)
             if (self.resource_identifier is not None):
-                endpoint = endpoint + self.resource_identifier
+                endpoint = urllib.parse.urljoin(
+                    endpoint, self.resource_identifier
+                )
             endpoint = self._append_trailing_slash(endpoint)
         if kwargs.get('filters'):
             filters = kwargs.get('filters')
-            filters_string = self._build_query_filters(filters)
-            endpoint = endpoint + filters_string
+            filters_string = urllib.parse.urlencode(filters)
+            endpoint = endpoint + '?' + filters_string
         return endpoint
-
-    def _build_query_filters(self, filters_dict, start_query=True):
-        filters = '?' if start_query else '&'
-        for name, value in filters_dict.items():
-            filters = filters + name + "=" + value + "&"
-        return filters
 
     def _put_or_patch_by_identifier(self,
                                     method,
