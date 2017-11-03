@@ -4,6 +4,17 @@ This file will be added to as part of each release
 
 ----
 
+Version 0.5.1, Fri 03 Nov 2017
+===============================
+
+3e777892db	Force resource_create function on init for admin user resource (ConnorMac)
+32214255ef	Added currency overview (ConnorMac)
+ae3a77f21e	Added overview class (ConnorMac)
+8945d23fce	Fixed syntax error for documents class and added addresses (ConnorMac)
+a76ab1906f	Removed old query param builder function (ConnorMac)
+5b2e34144f	Correctly urlencode query param and use pythons urljoin library to build urls (ConnorMac)
+
+
 Version 0.5.0, Wed 01 Nov 2017
 ===============================
 
