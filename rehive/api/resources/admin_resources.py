@@ -48,6 +48,7 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
             APIAdminFees,
             APIGeneralSwitches,
             APIAdminBankAccounts,
+            APIAdminOverview,
         )
         super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
@@ -75,8 +76,11 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminCryptoAccounts,
             APIAdminSwitches,
             APIAdminDocuments,
+            APIAdminAddresses,
+            APIAdminOverview,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
+        self.create_resources(self.resources)
 
     def create(self, first_name, last_name, email, mobile_number):
         data = {
@@ -95,7 +99,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
 
 class APIAdminDocuments(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        super(APIDocuments, self).__init__(client, endpoint, filters)
+        super(APIAdminDocuments, self).__init__(client, endpoint, filters)
 
     def create(self, document_type, file, **kwargs):
         return super().create(
@@ -124,6 +128,24 @@ class APIAdminEmails(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'emails'
+
+
+class APIAdminAddresses(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminAddresses, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'addresses'
+
+
+class APIAdminOverview(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminOverview, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'overview'
 
 
 class APIAdminMobiles(ResourceList):
