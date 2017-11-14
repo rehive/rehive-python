@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 0.6.0, Tue 14 Nov 2017
+===============================
+
+6c57317ef7	Adjusted admin transactions webhooks and switches to match new url structure. (ConnorMac)
+
+
 Version 0.5.1, Fri 03 Nov 2017
 ===============================
 
