@@ -164,9 +164,14 @@ class APIAdminMobiles(ResourceList):
         return 'mobiles'
 
 
-class APIAdminTransactions(ResourceList):
+class APIAdminTransactions(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
+        self.resources = {
+            APIAdminSwitches,
+            APIAdminWebhooks
+        }
         super(APIAdminTransactions, self).__init__(client, endpoint, filters)
+        self.create_resources(self.resources)
 
     def get_totals(self):
         response = self.get('totals/')
@@ -247,25 +252,13 @@ class APIGeneralSwitches(APIAdminSwitches):
     def __init__(self, client, endpoint, filters=None):
         super(APIGeneralSwitches, self).__init__(client, endpoint, filters)
 
-    def create(self, tx_type, enabled=False, **kwargs):
-        data = {
-            'tx_type': tx_type,
-            'enabled': enabled
-        }
-        return self.post(data, **kwargs)
 
-
-class APIAdminWebhooks(ResourceList, ResourceCollection):
+class APIAdminWebhooks(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (
-            APIAdminTransactionWebhooks,
-        )
         super(APIAdminWebhooks, self).__init__(client, endpoint, filters)
-        self.create_resources(self.resources)
 
-    def create(self, tx_type, url, **kwargs):
+    def create(self, url, **kwargs):
         data = {
-            'tx_type': tx_type,
             'url': url
         }
         return self.post(data, **kwargs)
