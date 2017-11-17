@@ -48,12 +48,23 @@ class Client:
             self._session.mount('http://', adapter)
             self._session.mount('https://', adapter)
 
-    def _request(self, method, path, data=None, json=True, **kwargs):
+    def _request(self,
+                 method,
+                 path,
+                 data=None,
+                 json=True,
+                 headers={},
+                 idempotent_key=None,
+                 **kwargs):
         if self._session is None:
             self._create_session()
 
         url = self.endpoint + path
-        headers = self._get_headers(json=json)
+        headers = self._get_headers(
+            headers=headers,
+            json=json,
+            idempotent_key=idempotent_key
+        )
 
         try:
             if (data and json):
@@ -98,11 +109,12 @@ class Client:
 
         return json
 
-    def _get_headers(self, json=True):
-        headers = {}
+    def _get_headers(self, headers, json=True, idempotent_key=None):
         if json:
             headers['Content-Type'] = 'application/json'
         if self.token is not None:
             headers['Authorization'] = 'Token ' + str(self.token)
+        if idempotent_key is not None:
+            headers['Idempotency-Key'] = idempotent_key
 
         return headers
