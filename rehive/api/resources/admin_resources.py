@@ -78,6 +78,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminDocuments,
             APIAdminAddresses,
             APIAdminOverview,
+            APIAdminPermissions
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
