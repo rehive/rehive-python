@@ -5,21 +5,29 @@ import json
 
 from .exception import APIException
 
+API_ENDPOINT = os.environ.get("REHIVE_API_URL",
+                              "https://rehive.com/api/3/")
+API_STAGING_ENDPOINT = os.environ.get("API_STAGING_ENDPOINT",
+                                      "https://staging.rehive.com/api/3/")
+
 
 class Client:
     """
     Interface for interacting with the rehive api
     """
-    API_ENDPOINT = os.environ.get("REHIVE_API_URL",
-                                  "https://rehive.com/api/3/")
 
     def __init__(self,
                  token=None,
                  connection_pool_size=0,
-                 api_endpoint_url=API_ENDPOINT):
+                 network='live',
+                 api_endpoint_url=None):
 
         self.token = token
-        self.endpoint = api_endpoint_url
+        if api_endpoint_url:
+            # Override the defaults
+            self.endpoint = api_endpoint_url
+        else:  
+            self.endpoint = API_ENDPOINT if (network == 'live') else API_STAGING_ENDPOINT 
         self._connection_pool_size = connection_pool_size
         self._session = None
 
