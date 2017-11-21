@@ -18,7 +18,7 @@ class Resource(object):
         response = self.client.get(url)
         return self._handle_resource_data(response)
 
-    def post(self, data={}, function=None, **kwargs):
+    def post(self, data={}, function=None, idempotent_key=None, **kwargs):
         # Allow us to parse through arbitrary request arguments
         request_kwargs = {}
         if 'file' in kwargs:
@@ -33,19 +33,33 @@ class Resource(object):
             kwargs.pop('json', None)
         data = {**data, **kwargs}
         url = self._build_url(function)
-        response = self.client.post(url, data, json=json, **request_kwargs)
+        response = self.client.post(
+            url,
+            data,
+            json=json,
+            idempotent_key=idempotent_key,
+            **request_kwargs
+        )
         return self._handle_resource_data(response)
 
-    def put(self, function='', **kwargs):
+    def put(self, function='', idempotent_key=None, **kwargs):
         data = kwargs
         url = self._build_url(function)
-        response = self.client.put(url, data)
+        response = self.client.put(
+            url,
+            data,
+            idempotent_key=idempotent_key
+        )
         return self._handle_resource_data(response)
 
-    def patch(self, function='', **kwargs):
+    def patch(self, function='', idempotent_key=None, **kwargs):
         data = kwargs
         url = self._build_url(function)
-        response = self.client.patch(url, data)
+        response = self.client.patch(
+            url,
+            data,
+            idempotent_key=idempotent_key
+        )
         return self._handle_resource_data(response)
 
     def delete(self, function='', **kwargs):
@@ -54,11 +68,18 @@ class Resource(object):
         response = self.client.delete(url, data)
         return self._handle_resource_data(response)
 
-    def update(self, function='', **kwargs):
-        return self.patch(function, **kwargs)
+    def update(self, function='', idempotent_key=None, **kwargs):
+        return self.patch(
+            function,
+            idempotent_key=idempotent_key,
+            **kwargs
+        )
 
-    def create(self, **kwargs):
-        return self.post(**kwargs)
+    def create(self, idempotent_key=None, **kwargs):
+        return self.post(
+            idempotent_key=idempotent_key,
+            **kwargs
+        )
 
     # PRIVATE METHODS
     def _build_url(self, function=None, **kwargs):
