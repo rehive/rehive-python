@@ -78,7 +78,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminDocuments,
             APIAdminAddresses,
             APIAdminOverview,
-            APIAdminPermissions
+            APIAdminPermissions,
+            APIAdminTokens,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -425,3 +426,12 @@ class APIAdminPermissionGroups(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'permission-groups'
+
+
+class APIAdminTokens(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminTokens, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'tokens'
