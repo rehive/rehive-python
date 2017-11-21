@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.0.2, Tue 21 Nov 2017
+===============================
+
+06190b7869	Added admin users token endpoint (ConnorMac)
+
+
 Version 1.0.1, Tue 21 Nov 2017
 ===============================
 
