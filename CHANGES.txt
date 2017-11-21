@@ -4,6 +4,15 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.0.0, Tue 21 Nov 2017
+===============================
+
+9597cb1c43	Add idempotent argument for the base resource put, patch and post methods (ConnorMac)
+0892057d47	Added support for arbitrary header assigment in client (ConnorMac)
+13c2131022	Added permission deletion and adding to users via admin endpoint (ConnorMac)
+a3004e5685	Added a network flag for staging and live apis (ConnorMac)
+
+
 Version 0.6.0, Tue 14 Nov 2017
 ===============================
 
