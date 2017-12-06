@@ -7,6 +7,10 @@ A tool primarly used for quick interfacing with the Rehive API.
 pip install rehive
 ```
 
+## Documentation
+
+For more in depth api details go to: http://docs.rehive.com/
+
 ## Examples And How-to
 
 ```python
