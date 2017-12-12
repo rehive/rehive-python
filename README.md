@@ -19,6 +19,12 @@ rehive = Rehive()  # OR Rehive(API_TOKEN_HERE)
 ```
 You can parse an api token or leave blank if manually logging in. Each object instance will store it's own token and act as another user.
 
+The SDK will default to the live API. To easily switch to staging there is a network flag:
+```python
+rehive = Rehive(network='staging')
+```
+
+
 Login:
 ```python
 rehive.auth.login(
@@ -71,4 +77,10 @@ try:
 except APIException as e:
   print(e.status_code) # Error code status code from Rehive
   print(e.data) # Any custom error messages and data returned from Rehive
+```
+
+## Idempotent requests
+
+```python
+rehive.user.update(last_name='test7777', idempotent_key='{UNIQUE_KEY}')
 ```
