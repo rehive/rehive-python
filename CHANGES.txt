@@ -4,6 +4,21 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.0, Thu 18 Jan 2018
+===============================
+
+d02487ba1b	Added webhook tasks requests (ConnorMac)
+29f8e441b3	Added webhook tasks (ConnorMac)
+3f721ce9ec	Added settings to account currencies (ConnorMac)
+b3528b49a0	Renamed switches to settings and removed uneeded sub-resources (ConnorMac)
+644e89da71	Added OPTIONS support to resources (ConnorMac)
+05e9aa602e	Added group account configuration (ConnorMac)
+eefa3cc652	Removed tier switches and added limits (ConnorMac)
+c3292846b4	Added groups and user assignment (ConnorMac)
+69372b191a	Added sections for Idempotent requests and the network flag in README (Connor Macdougall)
+bcfad8b04f	Added docs link to README (Connor Macdougall)
+
+
 Version 1.0.2, Tue 21 Nov 2017
 ===============================
 
