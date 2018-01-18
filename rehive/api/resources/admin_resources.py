@@ -18,7 +18,6 @@ class AdminResources(ResourceCollection):
             APIAdminWebhooks,
             APIAdminSubtypes,
             APIAdminBankAccounts,
-            APIAdminSwitches,
             APIAdminTiers,
             APIAdminGroups,
         )
@@ -46,7 +45,6 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminLimits,
             APIAdminFees,
-            APIGeneralSwitches,
             APIAdminBankAccounts,
             APIAdminOverview,
         )
@@ -74,7 +72,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminEmails,
             APIAdminMobiles,
             APIAdminCryptoAccounts,
-            APIAdminSwitches,
+            APIAdminSettings,
             APIAdminDocuments,
             APIAdminAddresses,
             APIAdminOverview,
@@ -170,7 +168,6 @@ class APIAdminMobiles(ResourceList):
 class APIAdminTransactions(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = {
-            APIAdminSwitches,
             APIAdminWebhooks
         }
         super(APIAdminTransactions, self).__init__(client, endpoint, filters)
@@ -226,7 +223,7 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
 
 class APIAdminCompany(Resource, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (APIGeneralSwitches,)
+        self.resources = (APIAdminSettings,)
         super(APIAdminCompany, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
@@ -235,25 +232,13 @@ class APIAdminCompany(Resource, ResourceCollection):
         return 'company'
 
 
-class APIAdminSwitches(ResourceList):
+class APIAdminSettings(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        super(APIAdminSwitches, self).__init__(client, endpoint, filters)
-
-    def create(self, switch_type, enabled=False, **kwargs):
-        data = {
-            'switch_type': switch_type,
-            'enabled': enabled
-        }
-        return self.post(data, **kwargs)
+        super(APIAdminSettings, self).__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
-        return 'switches'
-
-
-class APIGeneralSwitches(APIAdminSwitches):
-    def __init__(self, client, endpoint, filters=None):
-        super(APIGeneralSwitches, self).__init__(client, endpoint, filters)
+        return 'settings'
 
 
 class APIAdminWebhooks(ResourceList):
