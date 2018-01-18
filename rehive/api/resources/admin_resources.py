@@ -257,13 +257,25 @@ class APIAdminWebhooks(ResourceList):
         return 'webhooks'
 
 
-class APIAdminWebhookTasks(ResourceList):
+class APIAdminWebhookTasks(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
+        self.resources = (APIAdminWebhookRequests,)
         super(APIAdminWebhookTasks, self).__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
         return 'webhook-tasks'
+
+
+class APIAdminWebhookRequests(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminWebhookRequests, self).__init__(
+            client, endpoint, filters
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'requests'
 
 
 class APIAdminTransactionWebhooks(ResourceList):
