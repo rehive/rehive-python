@@ -20,7 +20,7 @@ class AdminResources(ResourceCollection):
             APIAdminBankAccounts,
             APIAdminSwitches,
             APIAdminTiers,
-            APIAdminPermissionGroups,
+            APIAdminGroups,
         )
         self.create_resources(self.resources)
 
@@ -80,6 +80,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminOverview,
             APIAdminPermissions,
             APIAdminTokens,
+            APIAdminGroups,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -410,22 +411,31 @@ class APIAdminPermissions(ResourceList):
         return 'permissions'
 
 
-class APIAdminPermissionGroups(ResourceList, ResourceCollection):
+class APIAdminGroups(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
             APIAdminPermissions,
         )
-        super(APIAdminPermissionGroups, self).__init__(client, endpoint, filters)
+        super(APIAdminGroups, self).__init__(client, endpoint, filters)
 
     def create(self, name, **kwargs):
-        return super().create(
-            name=name,
-            **kwargs
-        )
+        data = {
+            'name': name
+        }
+        return self.post(data, **kwargs)
+
+    def assign(self, group, **kwargs):
+        data = {
+            'group': group
+        }
+        return self.post(data, **kwargs)
+
+    def unassign(self, name, **kwargs):
+        return self.delete(function=name, **kwargs)
 
     @classmethod
     def get_resource_name(cls):
-        return 'permission-groups'
+        return 'groups'
 
 
 class APIAdminTokens(ResourceList):
