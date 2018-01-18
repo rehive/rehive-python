@@ -446,3 +446,23 @@ class APIAdminTokens(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'tokens'
+
+
+class APIAdminAccountConfigurations(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIAdminCurrencies,
+        )
+        super(APIAdminAccountConfigurations, self).__init__(
+            client, endpoint, filters
+        )
+
+    def create(self, name, **kwargs):
+        data = {
+            'name': name
+        }
+        return self.post(data, **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'account-configurations'
