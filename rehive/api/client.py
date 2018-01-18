@@ -46,6 +46,9 @@ class Client:
     def delete(self, path, data, **kwargs):
         return self._request('delete', path, **kwargs)
 
+    def options(self, path, **kwargs):
+        return self._request('options', path, **kwargs)
+
     def _create_session(self):
         self._session = requests.Session()
         if self._connection_pool_size > 0:
