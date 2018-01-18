@@ -68,6 +68,11 @@ class Resource(object):
         response = self.client.delete(url, data)
         return self._handle_resource_data(response)
 
+    def options(self, function='', **kwargs):
+        url = self._build_url(function)
+        response = self.client.options(url)
+        return self._handle_resource_data(response)
+
     def update(self, function='', idempotent_key=None, **kwargs):
         return self.patch(
             function,
