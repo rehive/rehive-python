@@ -347,9 +347,9 @@ class APIAdminFees(ResourceList):
 class APIAdminTiers(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
-            APIGeneralSwitches,
             APIAdminFees,
             APIAdminRequirements,
+            APIAdminLimits
         )
         super(APIAdminTiers, self).__init__(client, endpoint, filters)
 
@@ -415,6 +415,7 @@ class APIAdminGroups(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
             APIAdminPermissions,
+            APIAdminTiers,
         )
         super(APIAdminGroups, self).__init__(client, endpoint, filters)
 
