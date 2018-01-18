@@ -47,6 +47,7 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
             APIAdminFees,
             APIAdminBankAccounts,
             APIAdminOverview,
+            APIAdminSettings,
         )
         super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
