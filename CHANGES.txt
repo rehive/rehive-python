@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.1, Wed 24 Jan 2018
+===============================
+
+df1089686c	removed required fields for admin user create (ConnorMac)
+
+
 Version 1.1.0, Thu 18 Jan 2018
 ===============================
 
