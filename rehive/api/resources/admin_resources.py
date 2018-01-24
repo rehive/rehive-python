@@ -84,16 +84,6 @@ class APIAdminUsers(ResourceList, ResourceCollection):
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
-    def create(self, first_name, last_name, email, mobile_number):
-        data = {
-            "first_name": first_name,
-            "last_name": last_name,
-            "email": email,
-            "mobile_number": mobile_number
-        }
-        response = self.post(data)
-        return response
-
     @classmethod
     def get_resource_name(cls):
         return 'users'
