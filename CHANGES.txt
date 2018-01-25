@@ -4,6 +4,13 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.2, Thu 25 Jan 2018
+===============================
+
+15db3688e2	Added a proper check for 500 errors as well as a catch for json decode on error responses (ConnorMac)
+6c036ee9ed	Add currency as a required field for transaction creation calls (ConnorMac)
+
+
 Version 1.1.1, Wed 24 Jan 2018
 ===============================
 
