@@ -9,24 +9,27 @@ class APITransactions(ResourceList):
         response = self.get('totals/')
         return response
 
-    def create_credit(self, amount, **kwargs):
+    def create_credit(self, amount, currency, **kwargs):
         data = {
-            'amount': amount
+            'amount': amount,
+            'currency': currency
         }
         response = self.post(data, 'credit/', **kwargs)
         return response
 
-    def create_debit(self, amount, **kwargs):
+    def create_debit(self, amount, currency, **kwargs):
         data = {
-            'amount': amount
+            'amount': amount,
+            'currency': currency
         }
         response = self.post(data, 'debit/', **kwargs)
         return response
 
-    def create_transfer(self, amount, recipient, **kwargs):
+    def create_transfer(self, amount, recipient, currency, **kwargs):
         data = {
             'amount': amount,
-            'recipient': recipient
+            'recipient': recipient,
+            'currency': currency
         }
         response = self.post(data, 'transfer/', **kwargs)
         return response
