@@ -6,9 +6,9 @@ import json
 from .exception import APIException
 
 API_ENDPOINT = os.environ.get("REHIVE_API_URL",
-                              "https://rehive.com/api/3/")
+                              "https://api.rehive.com/3/")
 API_STAGING_ENDPOINT = os.environ.get("API_STAGING_ENDPOINT",
-                                      "https://staging.rehive.com/api/3/")
+                                      "https://api.staging.rehive.com/3/")
 
 
 class Client:
