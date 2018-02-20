@@ -1,7 +1,7 @@
 """ Python api for Rehive """
 import os
 import requests
-import json
+from  json.decoder import JSONDecodeError
 
 from .exception import APIException
 
@@ -103,10 +103,10 @@ class Client:
                     raise APIException(error_data.get(
                             'message', 'General error'),
                             result.status_code, error_data)
-                except json.decoder.JSONDecodeError:
+                except JSONDecodeError:
                     APIException(error_data.get(
                             'message', 'General error'),
-                            result.status_code) 
+                            result.status_code)
 
             response_json = self._handle_result(result)
             return response_json
