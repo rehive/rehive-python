@@ -416,6 +416,7 @@ class APIAdminGroups(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminPermissions,
             APIAdminTiers,
+            APIAdminAccountConfigurations
         )
         super(APIAdminGroups, self).__init__(client, endpoint, filters)
 
