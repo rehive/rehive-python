@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.5, Thu 01 Mar 2018
+===============================
+
+c5a0897296	Added account configuration to groups class (ConnorMac)
+
+
 Version 1.1.4, Tue 20 Feb 2018
 ===============================
 
