@@ -80,6 +80,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminPermissions,
             APIAdminTokens,
             APIAdminGroups,
+            APIAdminKyc,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -233,6 +234,15 @@ class APIAdminSettings(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'settings'
+
+
+class APIAdminKyc(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminKyc, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'kyc'
 
 
 class APIAdminWebhooks(ResourceList):
