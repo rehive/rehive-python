@@ -4,6 +4,13 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.6, Thu 22 Mar 2018
+===============================
+
+bd6b858b1c	Added user kyc endpoint (ConnorMac)
+f951c0a68e	Added bank accounts endpoint (ConnorMac)
+
+
 Version 1.1.5, Thu 01 Mar 2018
 ===============================
 
