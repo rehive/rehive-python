@@ -64,7 +64,6 @@ class Client:
                  path,
                  data=None,
                  json=True,
-                 headers={},
                  idempotent_key=None,
                  **kwargs):
         if self._session is None:
@@ -72,7 +71,6 @@ class Client:
 
         url = self.endpoint + path
         headers = self._get_headers(
-            headers=headers,
             json=json,
             idempotent_key=idempotent_key
         )
@@ -127,7 +125,8 @@ class Client:
 
         return json
 
-    def _get_headers(self, headers, json=True, idempotent_key=None):
+    def _get_headers(self, json=True, idempotent_key=None):
+        headers = {}
         if json:
             headers['Content-Type'] = 'application/json'
         if self.token is not None:
