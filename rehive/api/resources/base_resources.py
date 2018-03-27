@@ -18,8 +18,10 @@ class Resource(object):
         response = self.client.get(url)
         return self._handle_resource_data(response)
 
-    def post(self, data={}, function=None, idempotent_key=None, **kwargs):
+    def post(self, data=None, function=None, idempotent_key=None, **kwargs):
         # Allow us to parse through arbitrary request arguments
+        if data is None:
+            data = {}
         request_kwargs = {}
         if 'file' in kwargs:
             request_kwargs['files'] = {
