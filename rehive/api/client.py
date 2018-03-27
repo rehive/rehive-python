@@ -72,6 +72,7 @@ class Client:
 
         url = self.endpoint + path
         headers = self._get_headers(
+            headers=headers,
             json=json,
             idempotent_key=idempotent_key
         )
