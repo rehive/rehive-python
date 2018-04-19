@@ -5,8 +5,8 @@ class APITransactions(ResourceList):
     def __init__(self, client, endpoint='', filters=None):
         super(APITransactions, self).__init__(client, endpoint, filters)
 
-    def get_totals(self):
-        response = self.get('totals/')
+    def get_totals(self, **kwargs):
+        response = self.get('totals/', **kwargs)
         return response
 
     def create_credit(self, amount, currency, **kwargs):

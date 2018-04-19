@@ -165,8 +165,8 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
         super(APIAdminTransactions, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
-    def get_totals(self):
-        response = self.get('totals/')
+    def get_totals(self, **kwargs):
+        response = self.get('totals/', **kwargs)
         return response
 
     def patch(self, tx_code, status, **kwargs):
