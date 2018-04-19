@@ -3,6 +3,7 @@ import copy
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 import urllib.parse
+from rehive.api.exception import NoNextException, NoPreviousException
 
 
 class Resource(object):
@@ -107,7 +108,10 @@ class Resource(object):
         if kwargs.get('filters'):
             filters = kwargs.get('filters')
             filters_string = urllib.parse.urlencode(filters)
-            endpoint = endpoint + '?' + filters_string
+            if "?" not in endpoint:  
+                endpoint = endpoint + '?' + filters_string
+            else:
+                endpoint = endpoint + '&' + filters_string
         return endpoint
 
     def _put_or_patch_by_identifier(self,
@@ -168,11 +172,15 @@ class ResourceList(Resource):
         return self._handle_pagination_data(response)
 
     def get_next(self, **kwargs):
+        if self.next is None:
+            raise NoNextException
         url = self._build_url(pagination=self.next, **kwargs)
         response = self.client.get(url)
         return self._handle_pagination_data(response)
 
     def get_previous(self, **kwargs):
+        if self.previous is None:
+            raise NoPreviousException
         url = self._build_url(pagination=self.previous, **kwargs)
         response = self.client.get(url)
         return self._handle_pagination_data(response)
@@ -191,12 +199,12 @@ class ResourceList(Resource):
             if data.get('next') is not None:
                 self.next = self._get_next_page_filter(data.get('next'))
             else:
-                self.next = data.get('next')
+                self.next = None
         if 'previous' in data:
             if data.get('previous') is not None:
                 self.previous = self._get_next_page_filter(data['previous'])
             else:
-                self.previous = data.get('previous')
+                self.previous = None
         if 'count' in data:
             self._count = data.get('count')
         if 'results' in data:
