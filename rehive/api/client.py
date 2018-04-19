@@ -1,6 +1,7 @@
 """ Python api for Rehive """
 import os
 import requests
+import logging
 from  json.decoder import JSONDecodeError
 
 from .exception import APIException
@@ -20,16 +21,31 @@ class Client:
                  token=None,
                  connection_pool_size=0,
                  network='live',
+                 debug=False,
                  api_endpoint_url=None):
 
         self.token = token
         if api_endpoint_url:
             # Override the defaults
             self.endpoint = api_endpoint_url
-        else:  
+        else:
             self.endpoint = API_ENDPOINT if (network == 'live') else API_STAGING_ENDPOINT 
         self._connection_pool_size = connection_pool_size
         self._session = None
+
+        # Enable requests logging
+        if debug:
+            try:
+                from http.client import HTTPConnection
+            except ImportError:
+                from httplib import HTTPConnection
+            HTTPConnection.debuglevel = 1
+
+            logging.basicConfig()
+            logging.getLogger().setLevel(logging.DEBUG)
+            requests_log = logging.getLogger("urllib3")
+            requests_log.setLevel(logging.DEBUG)
+            requests_log.propagate = True
 
     def post(self, path, data, json=True, **kwargs):
         return self._request('post', path, data, json=json, **kwargs)
