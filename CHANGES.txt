@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.8, Thu 19 Apr 2018
+===============================
+
+b689f2a63f	Allows filters to passed to get_total calls (ConnorMac)
+
+
 Version 1.1.7, Sun 25 Mar 2018
 ===============================
 
