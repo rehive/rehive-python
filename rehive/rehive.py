@@ -10,10 +10,16 @@ from .api.resources.company_resources import APICompany
 
 class Rehive:
 
-    def __init__(self, token=None, connection_pool_size=0, network="live", **kwargs):
+    def __init__(self, token=None, connection_pool_size=0, network="live", debug=False, **kwargs):
         # API Classes
-        # Leave token blank if logging in
-        self.client = Client(token, connection_pool_size, network, **kwargs)
+        self.debug = debug
+        self.client = Client(
+            token,
+            connection_pool_size,
+            network,
+            debug,
+            **kwargs
+        )
         self.admin = AdminResources(self.client)
         self.auth = AuthResources(self.client)
         self.util = RehiveUtil(self.client)
