@@ -2,7 +2,7 @@
 import os
 import requests
 import logging
-from  json.decoder import JSONDecodeError
+from json.decoder import JSONDecodeError
 
 from .exception import APIException
 
