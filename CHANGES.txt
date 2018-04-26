@@ -4,6 +4,16 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.9, Thu 26 Apr 2018
+===============================
+
+3ba9b29a67	Syntax cleanup (ConnorMac)
+a7ab613d8d	Throw a NoPaginationException when trying to get_next or previous were there is none. (ConnorMac)
+ce72e41893	Allow users to set debug mode on, this will currently just log all requests made. (ConnorMac)
+4f7069a523	Pass header arg into get_headers function (ConnorMac)
+80c833c863	Re-added custom headers but removed all mutable default arguments (ConnorMac)
+
+
 Version 1.1.8, Thu 19 Apr 2018
 ===============================
 
