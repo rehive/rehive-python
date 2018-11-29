@@ -151,9 +151,9 @@ class APIAuthMobile(Resource):
 
 class APIAuthTokens(Resource):
 
-    def create(self, password):
+    def create(self, password, **kwargs):
         data = {"password": password}
-        return self.post(data)
+        return self.post(data, **kwargs)
 
     def delete(self, token_key):
         return super().delete(token_key)
