@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.10, Thu 29 Nov 2018
+================================
+
+bc07b78165	Fix token create resource to allow duration parameter (Michail Brynard)
+
+
 Version 1.1.9, Thu 26 Apr 2018
 ===============================
 
