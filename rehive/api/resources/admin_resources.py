@@ -148,7 +148,7 @@ class APIAdminMobiles(ResourceList):
     def create(self, user, number, **kwargs):
         data = {
             'user': user,
-            'email': email
+            'number': number
         }
         return self.post(data, **kwargs)
 
