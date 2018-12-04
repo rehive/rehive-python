@@ -145,10 +145,10 @@ class APIAdminMobiles(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super(APIAdminMobiles, self).__init__(client, endpoint, filters)
 
-    def create(self, user, number, **kwargs):
+    def create(self, user, mobile, **kwargs):
         data = {
             'user': user,
-            'email': email
+            'mobile': mobile
         }
         return self.post(data, **kwargs)
 
