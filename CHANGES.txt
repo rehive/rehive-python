@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.11, Tue 04 Dec 2018
+================================
+
+af8f207846	Remove email from mobile number admin data. Added number field. (ConnorMac)
+
+
 Version 1.1.10, Thu 29 Nov 2018
 ================================
 
