@@ -16,13 +16,13 @@ class AuthResources(Resource, ResourceCollection):
         super(AuthResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
 
-    def login(self, user, company, password):
+    def login(self, user, company, password, **kwargs):
         data = {
             "user": user,
             "company": company,
             "password": password,
         }
-        response = self.post(data, 'login')
+        response = self.post(data, 'login', **kwargs)
         return response
 
     def register(self,
