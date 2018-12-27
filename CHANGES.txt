@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.1.12, Thu 27 Dec 2018
+================================
+
+9fc0827348	Add session_duration to login functionality. (Tejogol)
+
+
 Version 1.1.11, Tue 04 Dec 2018
 ================================
 
