@@ -109,8 +109,31 @@ class Resource(object):
             endpoint = self._append_trailing_slash(endpoint)
         if kwargs.get('filters'):
             filters = kwargs.get('filters')
-            filters_string = urllib.parse.urlencode(filters)
-            if "?" not in endpoint:  
+            filters_clean = {}
+
+            # Filter out any special case filters
+            array_type_filters = {}
+            for f in filters:
+                if type(filters[f]) is list:
+                    array_type_filters[f] = filters[f]
+                else:
+                    filters_clean[f] = filters[f]
+
+            array_filters_string = ''
+            for array_filter in array_type_filters:
+                encoded_array = urllib.parse.urlencode(
+                    {array_filter: array_type_filters[array_filter]},
+                    safe="[],'\""
+                )
+                array_filters_string = re.sub('[\[\'\]\+]', '', encoded_array)
+
+            filters_string = urllib.parse.urlencode(filters_clean)
+            if filters_string:
+                filters_string = filters_string + '&' + array_filters_string
+            else:
+                filters_string = array_filters_string
+
+            if "?" not in endpoint:
                 endpoint = endpoint + '?' + filters_string
             else:
                 endpoint = endpoint + '&' + filters_string
