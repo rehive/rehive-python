@@ -171,15 +171,9 @@ class APIAuthTokens(Resource):
 
 class APIAuthMFA(Resource):
 
-    def authorize_number(self, mobile):
+    def enable_sms(self, mobile):
         data = {
-            "mobile_number": mobile
-        }
-        return self.post(data, 'sms')
-
-    def send_sms(self, mobile):
-        data = {
-            "mobile_number": mobile
+            "mobile": mobile
         }
         return self.post(data, 'sms/send')
 
