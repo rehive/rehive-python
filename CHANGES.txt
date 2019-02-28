@@ -4,6 +4,13 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.2.0, Thu 28 Feb 2019
+===============================
+
+aff985a8de	Remove auth POST for SMS and renamed mobile_number to mobile (ConnorMac)
+f9580557f1	Create a special URL encoding case for array params (ConnorMac)
+
+
 Version 1.1.12, Thu 27 Dec 2018
 ================================
 
