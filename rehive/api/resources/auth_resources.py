@@ -26,16 +26,12 @@ class AuthResources(Resource, ResourceCollection):
         return response
 
     def register(self,
-                 first_name,
-                 last_name,
                  email,
                  company,
                  password1,
                  password2,
                  **kwargs):
         data = {
-           "first_name": first_name,
-           "last_name": last_name,
            "email": email,
            "company": company,
            "password1": password1,
