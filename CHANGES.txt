@@ -4,6 +4,12 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.2.1, Thu 07 Mar 2019
+===============================
+
+48e006d8c2	Update auth_resources.py (Tejogol)
+
+
 Version 1.2.0, Thu 28 Feb 2019
 ===============================
 
