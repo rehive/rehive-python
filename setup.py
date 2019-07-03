@@ -1,7 +1,7 @@
 """
 Rehive SDK for rapid service development.
 """
-from os
+import os
 from codecs import open
 # Always prefer setuptools over distutils
 from setuptools import find_packages, setup
