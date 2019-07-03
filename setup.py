@@ -1,28 +1,35 @@
 """
-Rehive SDK for rapid service development
+Rehive SDK for rapid service development.
 """
-
-# Always prefer setuptools over distutils
-from setuptools import setup, find_packages
-# To use a consistent encoding
+from os
 from codecs import open
-from os import path
+# Always prefer setuptools over distutils
+from setuptools import find_packages, setup
 
-here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+VERSION = '1.2.2'
+
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
+    README = readme.read()
+
+# allow setup.py to be run from any path
+os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='rehive',
-    version=open('VERSION').read().strip(),
-    description='Rehive SDK for Python',
+    version=VERSION,
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    include_package_data=True,
+    description=README,
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/rehive/rehive-python',
+    download_url='https://github.com/rehive/rehive-python/archive/{}.zip'.format(VERSION),
     author='Rehive',
     author_email='info@rehive.com',
     license='MIT',
+    install_requires=['requests'],
+    python_requires='>=3.4',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -34,6 +41,4 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     keywords='rehive api sdk development',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['requests']
 )
