@@ -4,6 +4,13 @@ This file will be added to as part of each release
 
 ----
 
+Version 1.2.4, Tue 05 Nov 2019
+===============================
+
+bbaf4636e5	Hotfix: correct SDK logout functions (ConnorMac)
+6d66df653e	Incremented setup.py (ConnorMac)
+
+
 Version 1.2.1, Thu 07 Mar 2019
 ===============================
 
