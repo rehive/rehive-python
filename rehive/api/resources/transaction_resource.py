@@ -37,3 +37,12 @@ class APITransactions(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'transactions'
+
+
+class APITransactionCollections(ResourceList):
+    def __init__(self, client, endpoint='', filters=None):
+        super(APITransactionCollections, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'transaction-collections'
