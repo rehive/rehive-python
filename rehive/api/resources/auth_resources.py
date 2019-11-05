@@ -62,12 +62,14 @@ class AuthResources(Resource, ResourceCollection):
             return response
 
     def logout(self):
+        resp = self.post({}, 'logout')
         self.client.token = None
-        return self.post({}, 'logout')
+        return resp
 
     def logout_all(self):
+        resp = self.post({}, 'logout/all')
         self.client.token = None
-        return self.post({}, 'logout/all')
+        return resp
 
     @classmethod
     def get_resource_name(cls):
