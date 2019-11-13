@@ -24,3 +24,8 @@ class NoPreviousException(NoPaginationException):
     def __init__(self):
 
         super(NoPreviousException, self).__init__()
+
+
+class Timeout(Exception):
+    def __init__(self, message):
+        super(Timeout, self).__init__(message)
