@@ -169,7 +169,7 @@ class Resource(object):
         return url
 
     def _set_resource_identifier(self, resource_identifiter):
-        self.resource_identifier = resource_identifiter
+        self.resource_identifier = str(resource_identifiter)
 
     def _set_endpoint(self, endpoint):
         self.endpoint = self._append_trailing_slash(endpoint)
@@ -197,6 +197,8 @@ class ResourceList(Resource):
         self._count = 0
 
     def get(self, endpoint=None, **kwargs):
+        if endpoint:
+            endpoint = str(endpoint)
         url = self._build_url(endpoint, **kwargs)
         response = self.client.get(url)
         return self._handle_pagination_data(response)
