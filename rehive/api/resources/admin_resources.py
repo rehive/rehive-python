@@ -171,6 +171,14 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
         data['status'] = status
         return super(APIAdminTransactions, self).patch(tx_code + '/', **data)
 
+    def update(self, function='', idempotent_key=None, timeout=None, **kwargs):
+        return super(APIAdminTransactions, self).patch(
+            function,
+            idempotent_key=idempotent_key,
+            timeout=timeout,
+            **kwargs
+        )
+
     def confirm(self, tx_code, **kwargs):
         self.patch(tx_code, "complete", **kwargs)
 
