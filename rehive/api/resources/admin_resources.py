@@ -517,7 +517,7 @@ class APIAdminDevices(ResourceList, ResourceCollection):
         return 'devices'
 
 
-class APIAdminDeviceApps(Resource):
+class APIAdminDeviceApps(ResourceList, ResourceCollection):
 
     @classmethod
     def get_resource_name(cls):
