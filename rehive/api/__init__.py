@@ -1,1 +1,1 @@
-from .exception import APIException, NoPaginationException, NoNextException, NoPreviousException
+from .exception import APIException, NoPaginationException, NoNextException, NoPreviousException, Timeout

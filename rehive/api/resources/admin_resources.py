@@ -20,6 +20,7 @@ class AdminResources(ResourceCollection):
             APIAdminBankAccounts,
             APIAdminTiers,
             APIAdminGroups,
+            APIAdminTransactionCollections
         )
         self.create_resources(self.resources)
 
@@ -171,6 +172,14 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
         data['status'] = status
         return super(APIAdminTransactions, self).patch(tx_code + '/', **data)
 
+    def update(self, function='', idempotent_key=None, timeout=None, **kwargs):
+        return super(APIAdminTransactions, self).patch(
+            function,
+            idempotent_key=idempotent_key,
+            timeout=timeout,
+            **kwargs
+        )
+
     def confirm(self, tx_code, **kwargs):
         self.patch(tx_code, "complete", **kwargs)
 
@@ -211,6 +220,26 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'transactions'
+
+
+class APIAdminTransactionCollections(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminTransactionCollections, self).__init__(client, endpoint, filters)
+
+    def status_patch(self, collection_id, status, **kwargs):
+        data = kwargs
+        data['status'] = status
+        return super(APIAdminTransactionCollections, self).patch(collection_id + '/', **data)
+
+    def confirm(self, collection_id, **kwargs):
+        self.status_patch(collection_id, "complete", **kwargs)
+
+    def fail(self, collection_id, **kwargs):
+        self.status_patch(collection_id, "failed", **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'transaction-collections'
 
 
 class APIAdminCompany(Resource, ResourceCollection):

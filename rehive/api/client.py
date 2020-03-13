@@ -4,7 +4,7 @@ import requests
 import logging
 from json.decoder import JSONDecodeError
 
-from .exception import APIException
+from .exception import APIException, Timeout
 
 API_ENDPOINT = os.environ.get("REHIVE_API_URL",
                               "https://api.rehive.com/3/")
@@ -22,7 +22,8 @@ class Client:
                  connection_pool_size=0,
                  network='live',
                  debug=False,
-                 api_endpoint_url=None):
+                 api_endpoint_url=None,
+                 timeout=120):
 
         self.token = token
         if api_endpoint_url:
@@ -32,6 +33,7 @@ class Client:
             self.endpoint = API_ENDPOINT if (network == 'live') else API_STAGING_ENDPOINT 
         self._connection_pool_size = connection_pool_size
         self._session = None
+        self.timeout = timeout
 
         # Enable requests logging
         if debug:
@@ -92,6 +94,8 @@ class Client:
             json=json,
             idempotent_key=idempotent_key
         )
+        if not kwargs.get('timeout', None):
+            kwargs['timeout'] = self.timeout
 
         try:
             if (data and json):
@@ -107,7 +111,12 @@ class Client:
                                                data=data,
                                                **kwargs)
             else:
-                result = self._session.request(method, url, headers=headers, **kwargs)
+                result = self._session.request(
+                    method,
+                    url,
+                    headers=headers,
+                    **kwargs
+                )
 
             if not result.ok:
                 if result.status_code == 404:
@@ -127,10 +136,12 @@ class Client:
             response_json = self._handle_result(result)
             return response_json
 
+        except requests.exceptions.Timeout as e:
+            raise Timeout(str(e))
+        except requests.exceptions.ConnectTimeout as e:
+            raise Timeout(str(e))
         except requests.exceptions.ConnectionError as e:
             raise APIException(str(e))
-        except requests.exceptions.Timeout as e:
-            raise APIException("Connection timed out.", None, str(e))
         except requests.exceptions.RequestException as e:
             raise APIException("General request error",  None, str(e))
 

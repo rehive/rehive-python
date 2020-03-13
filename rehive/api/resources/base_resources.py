@@ -14,12 +14,12 @@ class Resource(object):
         self.resource_identifier = ''
         self.has_been_hydrated = False
 
-    def get(self, function=None, **kwargs):
+    def get(self, function=None, timeout=None, **kwargs):
         url = self._build_url(function, **kwargs)
-        response = self.client.get(url)
+        response = self.client.get(url, timeout=timeout)
         return self._handle_resource_data(response)
 
-    def post(self, data=None, function=None, idempotent_key=None, **kwargs):
+    def post(self, data=None, function=None, idempotent_key=None, timeout=None, **kwargs):
         # Allow us to parse through arbitrary request arguments
         if data is None:
             data = {}
@@ -41,51 +41,56 @@ class Resource(object):
             data,
             json=json,
             idempotent_key=idempotent_key,
+            timeout=timeout,
             **request_kwargs
         )
         return self._handle_resource_data(response)
 
-    def put(self, function='', idempotent_key=None, **kwargs):
+    def put(self, function='', idempotent_key=None, timeout=None, **kwargs):
         data = kwargs
         url = self._build_url(function)
         response = self.client.put(
             url,
             data,
-            idempotent_key=idempotent_key
+            idempotent_key=idempotent_key,
+            timeout=timeout
         )
         return self._handle_resource_data(response)
 
-    def patch(self, function='', idempotent_key=None, **kwargs):
+    def patch(self, function='', idempotent_key=None, timeout=None, **kwargs):
         data = kwargs
         url = self._build_url(function)
         response = self.client.patch(
             url,
             data,
-            idempotent_key=idempotent_key
+            idempotent_key=idempotent_key,
+            timeout=timeout
         )
         return self._handle_resource_data(response)
 
-    def delete(self, function='', **kwargs):
+    def delete(self, function='', timeout=None, **kwargs):
         data = kwargs
         url = self._build_url(function)
-        response = self.client.delete(url, data)
+        response = self.client.delete(url, data, timeout=timeout)
         return self._handle_resource_data(response)
 
-    def options(self, function='', **kwargs):
+    def options(self, function='', timeout=None, **kwargs):
         url = self._build_url(function)
-        response = self.client.options(url)
+        response = self.client.options(url, timeout=timeout)
         return self._handle_resource_data(response)
 
-    def update(self, function='', idempotent_key=None, **kwargs):
+    def update(self, function='', idempotent_key=None, timeout=None, **kwargs):
         return self.patch(
             function,
             idempotent_key=idempotent_key,
+            timeout=timeout,
             **kwargs
         )
 
-    def create(self, idempotent_key=None, **kwargs):
+    def create(self, idempotent_key=None, timeout=None, **kwargs):
         return self.post(
             idempotent_key=idempotent_key,
+            timeout=timeout,
             **kwargs
         )
 
@@ -164,7 +169,7 @@ class Resource(object):
         return url
 
     def _set_resource_identifier(self, resource_identifiter):
-        self.resource_identifier = resource_identifiter
+        self.resource_identifier = str(resource_identifiter)
 
     def _set_endpoint(self, endpoint):
         self.endpoint = self._append_trailing_slash(endpoint)
@@ -192,6 +197,8 @@ class ResourceList(Resource):
         self._count = 0
 
     def get(self, endpoint=None, **kwargs):
+        if endpoint:
+            endpoint = str(endpoint)
         url = self._build_url(endpoint, **kwargs)
         response = self.client.get(url)
         return self._handle_pagination_data(response)

@@ -5,4 +5,4 @@ __email__ = 'connor@rehive.com'
 
 
 from .rehive import Rehive
-from .api import APIException, NoPaginationException, NoNextException, NoPreviousException
+from .api import APIException, NoPaginationException, NoNextException, NoPreviousException, Timeout
