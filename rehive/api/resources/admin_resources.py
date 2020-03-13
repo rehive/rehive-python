@@ -77,6 +77,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminTokens,
             APIAdminGroups,
             APIAdminKyc,
+            APIAdminDevices,
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -473,3 +474,22 @@ class APIAdminAccountConfigurations(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'account-configurations'
+
+
+class APIAdminDevices(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIAdminDeviceApps,
+        )
+        super(APIAdminDevices, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'devices'
+
+
+class APIAdminDeviceApps(Resource):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'apps'

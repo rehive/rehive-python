@@ -12,7 +12,9 @@ class UserResources(Resource, ResourceCollection):
             APIUserMobiles,
             APIBankAccounts,
             APICryptoAccounts,
-            APIDocuments
+            APIDocuments,
+            APIDevices,
+            APIDeviceApps
         )
         super(UserResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -95,3 +97,22 @@ class APIDocuments(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'documents'
+
+
+class APIDevices(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIDeviceApps,
+        )
+        super(APIDevices, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'devices'
+
+
+class APIDeviceApps(Resource):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'apps'
