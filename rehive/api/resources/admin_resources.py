@@ -20,7 +20,9 @@ class AdminResources(ResourceCollection):
             APIAdminBankAccounts,
             APIAdminTiers,
             APIAdminGroups,
-            APIAdminTransactionCollections
+            APIAdminTransactionCollections,
+            APIAdminExports,
+            APIAdminMetrics
         )
         self.create_resources(self.resources)
 
@@ -522,3 +524,31 @@ class APIAdminDeviceApps(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'apps'
+
+
+class APIAdminExports(ResourceList):
+    def __init__(self, client, endpoint='', filters=None):
+        super(APIAdminExports, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'exports'
+
+
+class APIAdminMetrics(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint='', filters=None):
+        self.resources = (APIAdminMetricPoints,)
+        super(APIAdminMetrics, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'metrics'
+
+
+class APIAdminMetricPoints(ResourceList):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminMetricPoints, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'points'

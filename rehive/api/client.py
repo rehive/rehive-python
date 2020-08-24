@@ -23,14 +23,14 @@ class Client:
                  network='live',
                  debug=False,
                  api_endpoint_url=None,
-                 timeout=120):
+                 timeout=30):
 
         self.token = token
         if api_endpoint_url:
             # Override the defaults
             self.endpoint = api_endpoint_url
         else:
-            self.endpoint = API_ENDPOINT if (network == 'live') else API_STAGING_ENDPOINT 
+            self.endpoint = API_ENDPOINT if (network == 'live') else API_STAGING_ENDPOINT
         self._connection_pool_size = connection_pool_size
         self._session = None
         self.timeout = timeout
