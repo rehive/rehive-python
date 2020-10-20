@@ -20,6 +20,7 @@ class AdminResources(ResourceCollection):
             APIAdminBankAccounts,
             APIAdminTiers,
             APIAdminGroups,
+            APIAdminAccountDefinitions,
             APIAdminTransactionCollections,
             APIAdminExports,
             APIAdminMetrics
@@ -454,7 +455,6 @@ class APIAdminGroups(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminPermissions,
             APIAdminTiers,
-            APIAdminAccountConfigurations
         )
         super(APIAdminGroups, self).__init__(client, endpoint, filters)
 
@@ -487,12 +487,12 @@ class APIAdminTokens(ResourceList):
         return 'tokens'
 
 
-class APIAdminAccountConfigurations(ResourceList, ResourceCollection):
+class APIAdminAccountDefinitions(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
-            APIAdminCurrencies,
+            APIAdminAccountDefinitionGroups,
         )
-        super(APIAdminAccountConfigurations, self).__init__(
+        super(APIAdminAccountDefinitions, self).__init__(
             client, endpoint, filters
         )
 
@@ -504,7 +504,44 @@ class APIAdminAccountConfigurations(ResourceList, ResourceCollection):
 
     @classmethod
     def get_resource_name(cls):
-        return 'account-configurations'
+        return 'account_definitions'
+
+
+class APIAdminAccountDefinitionGroups(
+        ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIAdminAccountDefinitionGroupCurrencies,
+        )
+        super(APIAdminAccountDefinitionGroups, self).__init__(
+            client, endpoint, filters
+        )
+
+    def create(self, group, **kwargs):
+        data = {
+            "group": group
+        }
+        response = self.post(data, **kwargs)
+        return response
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'groups'
+
+
+class APIAdminAccountDefinitionGroupCurrencies(
+        ResourceList, ResourceCollection):
+
+    def create(self, currency, **kwargs):
+        data = {
+            "currency": currency
+        }
+        response = self.post(data, **kwargs)
+        return response
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'currencies'
 
 
 class APIAdminDevices(ResourceList, ResourceCollection):
