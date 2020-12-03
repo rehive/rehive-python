@@ -10,6 +10,7 @@ from .api.resources.accounts_resources import APIAccounts
 from .api.resources.company_resources import APICompany
 from .api.resources.export_resources import APIExports
 from .api.resources.metric_resources import APIMetrics
+from .api.resources.account_definition_resources import APIAccountDefinitions
 
 
 class Rehive:
@@ -31,6 +32,7 @@ class Rehive:
         self.transactions = APITransactions(self.client)
         self.transaction_collections = APITransactionCollections(self.client)
         self.accounts = APIAccounts(self.client)
+        self.account_definitions = APIAccountDefinitions(self.client)
         self.company = APICompany(self.client)
         self.exports = APIExports(self.client)
         self.metrics = APIMetrics(self.client)
