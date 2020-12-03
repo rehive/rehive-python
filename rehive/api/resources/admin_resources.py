@@ -504,7 +504,7 @@ class APIAdminAccountDefinitions(ResourceList, ResourceCollection):
 
     @classmethod
     def get_resource_name(cls):
-        return 'account_definitions'
+        return 'account-definitions'
 
 
 class APIAdminAccountDefinitionGroups(
