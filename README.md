@@ -25,13 +25,9 @@ rehive = Rehive(network='staging')
 ```
 
 
-Login:
+Auth:
 ```python
-rehive.auth.login(
-  user="test@rehive.com",
-  company="test_company",
-  password="12345678"
-)
+rehive = Rehive(REHIVE_API_KEY)
 ```
 
 Get:
