@@ -7,7 +7,7 @@ from codecs import open
 from setuptools import find_packages, setup
 
 
-VERSION = '1.2.16'
+VERSION = '1.2.17'
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()

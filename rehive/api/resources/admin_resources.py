@@ -23,7 +23,8 @@ class AdminResources(ResourceCollection):
             APIAdminAccountDefinitions,
             APIAdminTransactionCollections,
             APIAdminExports,
-            APIAdminMetrics
+            APIAdminMetrics,
+            APIAdminAuth
         )
         self.create_resources(self.resources)
 
@@ -589,3 +590,31 @@ class APIAdminMetricPoints(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'points'
+
+
+class APIAdminAuth(Resource):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'auth'
+
+    def login(self, user, password, **kwargs):
+        data = {
+            "user": user,
+            "password": password,
+        }
+        response = self.post(data, 'login', **kwargs)
+        return response
+
+    def register(self,
+                 email,
+                 password1,
+                 password2,
+                 **kwargs):
+        data = {
+           "email": email,
+           "password1": password1,
+           "password2": password2
+        }
+        response = self.post(data, 'register', **kwargs)
+        return response
