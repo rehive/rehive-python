@@ -24,7 +24,8 @@ class AdminResources(ResourceCollection):
             APIAdminTransactionCollections,
             APIAdminExports,
             APIAdminMetrics,
-            APIAdminAuth
+            APIAdminAuth,
+            APIAdminNotifications,
         )
         self.create_resources(self.resources)
 
