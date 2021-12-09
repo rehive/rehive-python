@@ -623,7 +623,7 @@ class APIAdminAuth(Resource):
         return response
 
 
-class APIAdminCompanyAddress(ResourceList):
+class APIAdminCompanyAddress(Resource):
     def __init__(self, client, endpoint, filters=None):
         super(APIAdminCompanyAddress, self).__init__(client, endpoint, filters)
 
