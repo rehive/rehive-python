@@ -249,7 +249,10 @@ class APIAdminTransactionCollections(ResourceList):
 
 class APIAdminCompany(Resource, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (APIAdminSettings,)
+        self.resources = (
+            APIAdminSettings,
+            APIAdminCompanyAddress,
+        )
         super(APIAdminCompany, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
@@ -620,3 +623,12 @@ class APIAdminAuth(Resource):
         }
         response = self.post(data, 'register', **kwargs)
         return response
+
+
+class APIAdminCompanyAddress(Resource):
+    def __init__(self, client, endpoint, filters=None):
+        super(APIAdminCompanyAddress, self).__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'address'
