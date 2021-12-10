@@ -83,6 +83,7 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminGroups,
             APIAdminKyc,
             APIAdminDevices,
+            APIAdminBankAccounts
         }
         super(APIAdminUsers, self).__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -343,8 +344,9 @@ class APIAdminSubtypes(ResourceList):
         return 'subtypes'
 
 
-class APIAdminBankAccounts(ResourceList):
+class APIAdminBankAccounts(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
+        self.resources = (APIAdminCurrencies, )
         super(APIAdminBankAccounts, self).__init__(client, endpoint, filters)
 
     @classmethod
