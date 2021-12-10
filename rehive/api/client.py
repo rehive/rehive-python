@@ -124,14 +124,15 @@ class Client:
                 if result.status_code == 500:
                     raise APIException('Internal server error: ' + url, result.status_code)
                 try:
-                    error_data = result.json()
-                    raise APIException(error_data.get(
-                            'message', 'General error'),
-                            result.status_code, error_data)
+                    raise APIException(
+                        'JSON Decode error',
+                        result.status_code
+                    )
                 except JSONDecodeError:
-                    APIException(error_data.get(
-                            'message', 'General error'),
-                            result.status_code)
+                    APIException(
+                        'JSON Decode error',
+                        result.status_code
+                    )
 
             response_json = self._handle_result(result)
             return response_json
