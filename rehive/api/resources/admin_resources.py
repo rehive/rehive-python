@@ -57,9 +57,10 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
         )
         super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
-    def create(self, currency, **kwargs):
+    def create(self, code, divisibility=0, **kwargs):
         data = {
-            "currency": currency
+            "code": code,
+            "divisibility": divisibility
         }
         response = self.post(data, **kwargs)
         return response
