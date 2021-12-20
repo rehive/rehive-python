@@ -173,10 +173,6 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
         response = self.get('totals/', **kwargs)
         return response
 
-    def patch(self, tx_code, **kwargs):
-        data = kwargs
-        return super(APIAdminTransactions, self).patch(tx_code + '/', **data)
-
     def update(self, function='', idempotent_key=None, timeout=None, **kwargs):
         return super(APIAdminTransactions, self).patch(
             function,
