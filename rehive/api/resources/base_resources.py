@@ -14,12 +14,12 @@ class Resource(object):
         self.resource_identifier = ''
         self.has_been_hydrated = False
 
-    def get(self, function=None, timeout=None, **kwargs):
-        url = self._build_url(function, **kwargs)
+    def get(self, resource_id=None, timeout=None, **kwargs):
+        url = self._build_url(resource_id, **kwargs)
         response = self.client.get(url, timeout=timeout)
         return self._handle_resource_data(response)
 
-    def post(self, data=None, function=None, idempotent_key=None, timeout=None, **kwargs):
+    def post(self, data=None, resource_id=None, idempotent_key=None, timeout=None, **kwargs):
         # Allow us to parse through arbitrary request arguments
         if data is None:
             data = {}
@@ -35,7 +35,7 @@ class Resource(object):
             json = kwargs.get('json')
             kwargs.pop('json', None)
         data = {**data, **kwargs}
-        url = self._build_url(function)
+        url = self._build_url(resource_id)
         response = self.client.post(
             url,
             data,
@@ -46,9 +46,9 @@ class Resource(object):
         )
         return self._handle_resource_data(response)
 
-    def put(self, function='', idempotent_key=None, timeout=None, **kwargs):
+    def put(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
         data = kwargs
-        url = self._build_url(function)
+        url = self._build_url(resource_id)
         response = self.client.put(
             url,
             data,
@@ -57,9 +57,9 @@ class Resource(object):
         )
         return self._handle_resource_data(response)
 
-    def patch(self, function='', idempotent_key=None, timeout=None, **kwargs):
+    def patch(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
         data = kwargs
-        url = self._build_url(function)
+        url = self._build_url(resource_id)
         response = self.client.patch(
             url,
             data,
@@ -68,20 +68,20 @@ class Resource(object):
         )
         return self._handle_resource_data(response)
 
-    def delete(self, function='', timeout=None, **kwargs):
+    def delete(self, resource_id='', timeout=None, **kwargs):
         data = kwargs
-        url = self._build_url(function)
+        url = self._build_url(resource_id)
         response = self.client.delete(url, data, timeout=timeout)
         return self._handle_resource_data(response)
 
-    def options(self, function='', timeout=None, **kwargs):
-        url = self._build_url(function)
+    def options(self, resource_id='', timeout=None, **kwargs):
+        url = self._build_url(resource_id)
         response = self.client.options(url, timeout=timeout)
         return self._handle_resource_data(response)
 
-    def update(self, function='', idempotent_key=None, timeout=None, **kwargs):
+    def update(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
         return self.patch(
-            function,
+            resource_id,
             idempotent_key=idempotent_key,
             timeout=timeout,
             **kwargs
@@ -95,14 +95,14 @@ class Resource(object):
         )
 
     # PRIVATE METHODS
-    def _build_url(self, function=None, **kwargs):
+    def _build_url(self, resource_id=None, **kwargs):
         # currently pagination should override all
         if kwargs.get('pagination'):
             endpoint = urllib.parse.urljoin(self.endpoint, kwargs.get('pagination'))
         else:
-            if function:
+            if resource_id:
                 endpoint = urllib.parse.urljoin(
-                    self.endpoint, function
+                    self.endpoint, resource_id
                 )
             else:
                 endpoint = self.endpoint
@@ -150,11 +150,11 @@ class Resource(object):
                                     identifier_field,
                                     **kwargs):
         if (identifier is not None and identifier_field is not None):
-            function = '?' + identifier_field + '=' + identifier
+            resource_id = '?' + identifier_field + '=' + identifier
         else:
             raise Exception('No identifier supplied')
         data = kwargs
-        url = self._build_url(function)
+        url = self._build_url(resource_id)
         if method == 'PATCH':
             response = self.client.patch(url, data)
         elif method == 'PUT':
@@ -249,8 +249,8 @@ class ResourceList(Resource):
         last_segment = url_segments[-1]
         return last_segment
 
-    def _build_pagination_url(self, pagination, function=None):
-        endpoint = self.endpoint + function if function else self.endpoint
+    def _build_pagination_url(self, pagination, resource_id=None):
+        endpoint = self.endpoint + resource_id if resource_id else self.endpoint
         paginatated_endpoint = endpoint + pagination
         if self.filters:
             paginatated_endpoint = paginatated_endpoint + self.filters
