@@ -23,9 +23,12 @@ class Client:
                  network='live',
                  debug=False,
                  api_endpoint_url=None,
-                 timeout=30):
+                 timeout=30,
+                 user_agent=None,
+                 **kwargs):
 
         self.token = token
+        self.user_agent = user_agent
         if api_endpoint_url:
             # Override the defaults
             self.endpoint = api_endpoint_url
@@ -164,5 +167,7 @@ class Client:
             headers['Authorization'] = 'Token ' + str(self.token)
         if idempotent_key is not None:
             headers['Idempotency-Key'] = idempotent_key
+        if self.user_agent:
+            headers['User-Agent'] = str(self.user_agent)
 
         return headers
