@@ -38,8 +38,8 @@ class APIAdminNotifications(ResourceList):
 
 class APIAdminAccounts(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None, resource_identifier=None):
-        self.resources = (APIAdminCurrencies,)
-        super(APIAdminAccounts, self).__init__(client, endpoint, filters)
+        self.resources = (APIAdminAccountCurrencies,)
+        super().__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
@@ -55,7 +55,7 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
             APIAdminOverview,
             APIAdminSettings,
         )
-        super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
+        super().__init__(client, endpoint, filters)
 
     def create(self, code, divisibility, **kwargs):
         data = {
@@ -68,6 +68,26 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'currencies'
+
+
+class APIAdminAccountCurrencies(APIAdminCurrencies):
+
+    def create(self, code, **kwargs):
+        data = {
+            "code": code
+        }
+        response = self.post(data, **kwargs)
+        return response
+
+
+class APIAdminBankAccountCurrencies(APIAdminCurrencies):
+
+    def create(self, code, **kwargs):
+        data = {
+            "code": code
+        }
+        response = self.post(data, **kwargs)
+        return response
 
 
 class APIAdminUsers(ResourceList, ResourceCollection):
@@ -346,8 +366,8 @@ class APIAdminSubtypes(ResourceList):
 
 class APIAdminBankAccounts(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (APIAdminCurrencies, )
-        super(APIAdminBankAccounts, self).__init__(client, endpoint, filters)
+        self.resources = (APIAdminBankAccountCurrencies,)
+        super().__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
