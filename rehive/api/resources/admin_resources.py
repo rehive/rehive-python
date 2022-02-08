@@ -72,9 +72,9 @@ class APIAdminCurrencies(ResourceList, ResourceCollection):
 
 class APIAdminAccountCurrencies(APIAdminCurrencies):
 
-    def create(self, code, **kwargs):
+    def create(self, currency, **kwargs):
         data = {
-            "code": code
+            "currency": currency
         }
         response = self.post(data, **kwargs)
         return response
@@ -82,9 +82,9 @@ class APIAdminAccountCurrencies(APIAdminCurrencies):
 
 class APIAdminBankAccountCurrencies(APIAdminCurrencies):
 
-    def create(self, code, **kwargs):
+    def create(self, currency, **kwargs):
         data = {
-            "code": code
+            "currency": currency
         }
         response = self.post(data, **kwargs)
         return response
