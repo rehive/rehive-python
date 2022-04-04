@@ -19,12 +19,6 @@ rehive = Rehive()  # OR Rehive(API_TOKEN_HERE)
 ```
 You can parse an api token or leave blank if manually logging in. Each object instance will store it's own token and act as another user.
 
-The SDK will default to the live API. To easily switch to staging there is a network flag:
-```python
-rehive = Rehive(network='staging')
-```
-
-
 Auth:
 ```python
 rehive = Rehive(REHIVE_API_KEY)
