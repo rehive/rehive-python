@@ -36,7 +36,7 @@ rehive.admin.accounts.obj('5AT24mW61H').currencies.get()
 
 Get with filters:
 ```python
-rehive.admin.transactions.get(filters={"status":"confirmed"})
+rehive.admin.transactions.get(filters={"status":"complete"})
 ```
 
 Create:
