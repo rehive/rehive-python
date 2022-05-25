@@ -211,29 +211,25 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
     def delete(self, tx_code, **kwargs):
         self.patch(tx_code, "deleted", **kwargs)
 
-    def create_credit(self, user, amount, currency, **kwargs):
+    def create_credit(self, amount, currency, **kwargs):
         data = {
-            'user': user,
             'amount': amount,
             'currency': currency
         }
         response = self.post(data, 'credit/', **kwargs)
         return response
 
-    def create_debit(self, user, amount, currency, **kwargs):
+    def create_debit(self, amount, currency, **kwargs):
         data = {
-            'user': user,
             'amount': amount,
             'currency': currency
         }
         response = self.post(data, 'debit/', **kwargs)
         return response
 
-    def create_transfer(self, user, amount, recipient, currency, **kwargs):
+    def create_transfer(self, amount, currency, **kwargs):
         data = {
-            'user': user,
             'amount': amount,
-            'recipient': recipient,
             'currency': currency
         }
         response = self.post(data, 'transfer/', **kwargs)

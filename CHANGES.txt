@@ -3,6 +3,11 @@ Change-log for rehive.
 This file will be added to as part of each release
 
 ----
+Version 1.2.22, Tue 25 May 2022
+===============================
+
+bbaf4636e5	Hotfix: correct SDK logout functions (ConnorMac)
+6d66df653e	Incremented setup.py (ConnorMac)
 
 Version 1.2.4, Tue 05 Nov 2019
 ===============================
