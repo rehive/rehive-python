@@ -3,6 +3,11 @@ Change-log for rehive.
 This file will be added to as part of each release
 
 ----
+Version 1.2.24, Tue 23 June 2022
+===============================
+
+- Update the `limit_type` and `crypto_type` fields to use `type`, which matches the API resource values.
+
 Version 1.2.23, Tue 25 May 2022
 ===============================
 

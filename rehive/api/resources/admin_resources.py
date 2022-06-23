@@ -384,10 +384,10 @@ class APIAdminLimits(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
 
-    def create(self, value, limit_type, tx_type, **kwargs):
+    def create(self, value, type, tx_type, **kwargs):
         data = {
             'value': value,
-            'type': limit_type,
+            'type': type,
             'tx_type': tx_type
         }
         return self.post(data, **kwargs)
@@ -451,10 +451,10 @@ class APIAdminCryptoAccounts(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
 
-    def create(self, address, crypto_type, **kwargs):
+    def create(self, address, type, **kwargs):
         return super().create(
             address=address,
-            type=crypto_type,
+            type=type,
             **kwargs
         )
 

@@ -70,10 +70,10 @@ class APICryptoAccounts(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super(APICryptoAccounts, self).__init__(client, endpoint, filters)
 
-    def create(self, address, crypto_type, **kwargs):
+    def create(self, address, type, **kwargs):
         return super().create(
             address=address,
-            type=crypto_type,
+            type=type,
             **kwargs
         )
 
