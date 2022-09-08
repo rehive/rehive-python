@@ -14,7 +14,7 @@ For documentation on the Rehive ecosystem: [Docs Portal](https://docs.rehive.com
 
 For the full Rehive Platform API specification: [API Reference](https://docs.platform.rehive.com/)
 
-## Examples And How-to
+## Usage
 
 ```python
 from rehive import Rehive, APIException
