@@ -2,7 +2,7 @@
 
 A Python SDK for the Rehive Platform API.
 
-## Install
+## Installation
 
 ```shell
 pip install rehive
