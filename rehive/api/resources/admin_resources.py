@@ -422,10 +422,7 @@ class APIAdminTiers(ResourceList, ResourceCollection):
         super().__init__(client, endpoint, filters)
 
     def create(self, currency, **kwargs):
-        data = {
-            'currency': currency
-        }
-        return self.post(data, **kwargs)
+        return self.post(**kwargs)
 
     @classmethod
     def get_resource_name(cls):
@@ -467,10 +464,9 @@ class APIAdminPermissions(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
 
-    def create(self, type, level, **kwargs):
+    def create(self, permissions, **kwargs):
         return super().create(
-            type=type,
-            level=level,
+            permissions=permissions,
             **kwargs
         )
 
