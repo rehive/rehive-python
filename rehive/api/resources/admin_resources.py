@@ -90,6 +90,20 @@ class APIAdminBankAccountCurrencies(APIAdminCurrencies):
         return response
 
 
+class APIAdminWalletCurrencies(ResourceList):
+    def create(self, currency, **kwargs):
+        data = {
+            "currency": currency,
+            **kwargs
+        }
+
+        return super().create(**data)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'currencies'
+
+
 class APIAdminUsers(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = {
@@ -105,7 +119,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminGroups,
             APIAdminKyc,
             APIAdminDevices,
-            APIAdminBankAccounts
+            APIAdminBankAccounts,
+            APIAdminWalletAccounts
         }
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -378,6 +393,20 @@ class APIAdminBankAccounts(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'bank-accounts'
+
+class APIAdminWalletAccounts(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (APIAdminWalletCurrencies,)
+        super().__init__(client, endpoint, filters)
+
+    def create(self, user, **kwargs):
+        data = {'user': user, **kwargs}
+        return super().create(**data)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'wallet-accounts'
+
 
 
 class APIAdminLimits(ResourceList):
