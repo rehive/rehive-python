@@ -300,11 +300,18 @@ class APIAdminTransactionCollectionTransactions(ResourceList):
         return 'transactions'
 
 
+class APIAdminCompanyLinks(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'links'
+
+
 class APIAdminCompany(Resource, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
             APIAdminSettings,
             APIAdminCompanyAddress,
+            APIAdminCompanyLinks
         )
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
