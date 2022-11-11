@@ -199,9 +199,10 @@ class APIAdminMobiles(ResourceList):
 
 class APIAdminTransactions(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = {
-            APIAdminWebhooks
-        }
+        self.resources = (
+            APIAdminWebhooks,
+            APIAdminTransactionMessages
+        )
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
@@ -253,6 +254,15 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'transactions'
+
+
+class APIAdminTransactionMessages(ResourceList):
+    def create(self, message, **kwargs):
+        return super().create(**{'message': message, **kwargs})
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'messages'
 
 
 class APIAdminTransactionCollections(ResourceList):
