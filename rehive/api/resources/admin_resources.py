@@ -26,7 +26,8 @@ class AdminResources(ResourceCollection):
             APIAdminMetrics,
             APIAdminAuth,
             APIAdminNotifications,
-            APIAdminSearch
+            APIAdminSearch,
+            APIAdminServices
         )
         self.create_resources(self.resources)
 
@@ -693,3 +694,20 @@ class APIAdminSearch(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'search'
+
+
+class APIAdminServices(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint='', filters=None):
+        self.resources = (APIAdminPermissions,)
+
+        super().__init__(client, endpoint, filters)
+
+    def create(self, name, url, **kwargs):
+        return super().create(name=name, url=url, **kwargs)
+
+    def put(self, name, url, **kwargs):
+        return super().put(name=name, url=url, **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'services'
