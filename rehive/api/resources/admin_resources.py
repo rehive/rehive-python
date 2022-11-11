@@ -26,6 +26,7 @@ class AdminResources(ResourceCollection):
             APIAdminMetrics,
             APIAdminAuth,
             APIAdminNotifications,
+            APIAdminSearch
         )
         self.create_resources(self.resources)
 
@@ -686,3 +687,9 @@ class APIAdminCompanyAddress(Resource):
     @classmethod
     def get_resource_name(cls):
         return 'address'
+
+
+class APIAdminSearch(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'search'
