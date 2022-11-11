@@ -443,9 +443,10 @@ class APIAdminFees(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
 
-    def create(self, tx_type, **kwargs):
+    def create(self, tx_type, currency, **kwargs):
         data = {
-            'tx_type': tx_type
+            'tx_type': tx_type,
+            'currency': currency
         }
         return self.post(data, **kwargs)
 
@@ -522,6 +523,7 @@ class APIAdminGroups(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminPermissions,
             APIAdminTiers,
+            APIAdminFees
         )
         super().__init__(client, endpoint, filters)
 
