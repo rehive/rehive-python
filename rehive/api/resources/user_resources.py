@@ -1,4 +1,5 @@
 from .base_resources import ResourceList, Resource, ResourceCollection
+from .public_resources import APILegalTerms
 
 
 class UserResources(Resource, ResourceCollection):
@@ -15,7 +16,8 @@ class UserResources(Resource, ResourceCollection):
             APIDocuments,
             APIDevices,
             APIDeviceApps,
-            APIWalletAccounts
+            APIWalletAccounts,
+            APILegalTerms
         )
         super(UserResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -48,7 +50,7 @@ class APIUserEmail(Resource):
 class APIUserMobiles(Resource):
 
     def create(self, number):
-        return super().create(email=email)
+        return super().create(number=number)
 
     def make_primary(self, number):
         return self.patch(number, primary=True)
