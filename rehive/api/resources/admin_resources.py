@@ -665,7 +665,6 @@ class APIAdminMetricPoints(ResourceList):
 
 
 class APIAdminAuth(Resource):
-
     @classmethod
     def get_resource_name(cls):
         return 'auth'
@@ -691,6 +690,11 @@ class APIAdminAuth(Resource):
         response = self.post(data, 'register', **kwargs)
         return response
 
+    def deactivate(self, user, **kwargs):
+        return self.post(user=user, resource_id='deactivate', **kwargs)
+
+    def deactivate_verify(self, key, **kwargs):
+        return self.post(key=key, resource_id='deactivate/verify', **kwargs)
 
 class APIAdminCompanyAddress(Resource):
     def __init__(self, client, endpoint, filters=None):
@@ -754,6 +758,7 @@ class APIAdminAuthenticatorRules(ResourceList):
             authenticator_types=authenticator_types,
             **kwargs
         )
+
     def put(self, durability, authenticator_types, **kwargs):
         return super().put(
             durability=durability,
