@@ -28,7 +28,8 @@ class AdminResources(ResourceCollection):
             APIAdminNotifications,
             APIAdminSearch,
             APIAdminServices,
-            APIAdminLegalTerms
+            APIAdminLegalTerms,
+            APIAdminAuthenticatorRules
         )
         self.create_resources(self.resources)
 
@@ -743,3 +744,23 @@ class APIAdminLegalTerms(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'legal-terms'
+
+
+class APIAdminAuthenticatorRules(ResourceList):
+    def create(self, type, durability, authenticator_types, **kwargs):
+        return super().create(
+            type=type,
+            durability=durability,
+            authenticator_types=authenticator_types,
+            **kwargs
+        )
+    def put(self, durability, authenticator_types, **kwargs):
+        return super().put(
+            durability=durability,
+            authenticator_types=authenticator_types,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'authenticator-rules'
