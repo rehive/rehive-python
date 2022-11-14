@@ -696,6 +696,20 @@ class APIAdminAuth(Resource):
     def deactivate_verify(self, key, **kwargs):
         return self.post(key=key, resource_id='deactivate/verify', **kwargs)
 
+    def password_reset(self, user, **kwargs):
+        return self.post(user=user, resource_id='password/reset', **kwargs)
+
+    def password_reset_confirm(
+            self, new_password1, new_password2, uid, token, **kwargs):
+        return self.post(
+            new_password1=new_password1,
+            new_password2=new_password2,
+            uid=uid,
+            token=token,
+            resource_id='password/reset/confirm'
+            **kwargs
+        )
+
 class APIAdminCompanyAddress(Resource):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
