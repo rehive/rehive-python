@@ -7,6 +7,7 @@ class PublicResources(ResourceList, ResourceCollection):
         self.endpoint = ''
         self.resources = (
             APILegalTerms,
+            APICompanies
         )
         super(PublicResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -30,4 +31,20 @@ class APILegalTerms(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'legal-terms'
+
+
+class APIGroups(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'groups'
+
+class APICompanies(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint='', filters=None):
+        self.resources = (APIGroups, APILegalTerms)
+
+        super().__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'companies'
 
