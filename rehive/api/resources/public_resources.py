@@ -22,6 +22,7 @@ class APIVersions(ResourceList):
     def get_resource_name(cls):
         return 'versions'
 
+
 class APILegalTerms(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None):
         self.resources = (APIVersions,)
@@ -37,6 +38,7 @@ class APIGroups(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'groups'
+
 
 class APICompanies(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None):

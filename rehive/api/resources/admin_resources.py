@@ -428,7 +428,6 @@ class APIAdminWalletAccounts(ResourceList, ResourceCollection):
         return 'wallet-accounts'
 
 
-
 class APIAdminLimits(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
@@ -708,6 +707,7 @@ class APIAdminAuth(Resource):
             resource_id='password/reset/confirm'
             **kwargs
         )
+
 
 class APIAdminCompanyAddress(Resource):
     def __init__(self, client, endpoint, filters=None):
