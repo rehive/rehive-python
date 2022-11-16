@@ -2,6 +2,7 @@ from .api.client import Client
 from .api.resources.admin_resources import AdminResources
 from .api.resources.auth_resources import AuthResources
 from .api.rehive_util import RehiveUtil
+from .api.resources.public_resources import PublicResources
 from .api.resources.user_resources import UserResources
 from .api.resources.transaction_resource import (
     APITransactions, APITransactionCollections
@@ -36,3 +37,4 @@ class Rehive:
         self.company = APICompany(self.client)
         self.exports = APIExports(self.client)
         self.metrics = APIMetrics(self.client)
+        self.public = PublicResources(self.client)

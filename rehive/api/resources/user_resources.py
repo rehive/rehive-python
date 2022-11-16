@@ -1,4 +1,5 @@
 from .base_resources import ResourceList, Resource, ResourceCollection
+from .public_resources import APILegalTerms
 
 
 class UserResources(Resource, ResourceCollection):
@@ -14,7 +15,9 @@ class UserResources(Resource, ResourceCollection):
             APICryptoAccounts,
             APIDocuments,
             APIDevices,
-            APIDeviceApps
+            APIDeviceApps,
+            APIWalletAccounts,
+            APILegalTerms
         )
         super(UserResources, self).__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -47,7 +50,7 @@ class APIUserEmail(Resource):
 class APIUserMobiles(Resource):
 
     def create(self, number):
-        return super().create(email=email)
+        return super().create(number=number)
 
     def make_primary(self, number):
         return self.patch(number, primary=True)
@@ -64,6 +67,34 @@ class APIBankAccounts(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'bank-accounts'
+
+
+class APIWalletCurrencies(ResourceList):
+    def create(self, currency, **kwargs):
+        data = {
+            "currency": currency,
+            **kwargs
+        }
+
+        return super().create(**data)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'currencies'
+
+
+class APIWalletAccounts(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (APIWalletCurrencies,)
+        super().__init__(client, endpoint, filters)
+
+    def create(self, user, **kwargs):
+        data = {'user': user, **kwargs}
+        return super().create(**data)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'wallet-accounts'
 
 
 class APICryptoAccounts(ResourceList):

@@ -26,6 +26,11 @@ class AdminResources(ResourceCollection):
             APIAdminMetrics,
             APIAdminAuth,
             APIAdminNotifications,
+            APIAdminSearch,
+            APIAdminServices,
+            APIAdminLegalTerms,
+            APIAdminAuthenticatorRules,
+            APIAdminAccessControlRules
         )
         self.create_resources(self.resources)
 
@@ -90,6 +95,20 @@ class APIAdminBankAccountCurrencies(APIAdminCurrencies):
         return response
 
 
+class APIAdminWalletCurrencies(ResourceList):
+    def create(self, currency, **kwargs):
+        data = {
+            "currency": currency,
+            **kwargs
+        }
+
+        return super().create(**data)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'currencies'
+
+
 class APIAdminUsers(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = {
@@ -105,7 +124,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminGroups,
             APIAdminKyc,
             APIAdminDevices,
-            APIAdminBankAccounts
+            APIAdminBankAccounts,
+            APIAdminWalletAccounts
         }
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -184,9 +204,7 @@ class APIAdminMobiles(ResourceList):
 
 class APIAdminTransactions(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = {
-            APIAdminWebhooks
-        }
+        self.resources = (APIAdminTransactionMessages,)
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
@@ -240,6 +258,15 @@ class APIAdminTransactions(ResourceList, ResourceCollection):
         return 'transactions'
 
 
+class APIAdminTransactionMessages(ResourceList):
+    def create(self, message, **kwargs):
+        return super().create(**{'message': message, **kwargs})
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'messages'
+
+
 class APIAdminTransactionCollections(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
@@ -272,11 +299,18 @@ class APIAdminTransactionCollectionTransactions(ResourceList):
         return 'transactions'
 
 
+class APIAdminCompanyLinks(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'links'
+
+
 class APIAdminCompany(Resource, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
         self.resources = (
             APIAdminSettings,
             APIAdminCompanyAddress,
+            APIAdminCompanyLinks
         )
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -380,6 +414,20 @@ class APIAdminBankAccounts(ResourceList, ResourceCollection):
         return 'bank-accounts'
 
 
+class APIAdminWalletAccounts(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (APIAdminWalletCurrencies,)
+        super().__init__(client, endpoint, filters)
+
+    def create(self, user, **kwargs):
+        data = {'user': user, **kwargs}
+        return super().create(**data)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'wallet-accounts'
+
+
 class APIAdminLimits(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
@@ -401,9 +449,10 @@ class APIAdminFees(ResourceList):
     def __init__(self, client, endpoint, filters=None):
         super().__init__(client, endpoint, filters)
 
-    def create(self, tx_type, **kwargs):
+    def create(self, tx_type, currency, **kwargs):
         data = {
-            'tx_type': tx_type
+            'tx_type': tx_type,
+            'currency': currency
         }
         return self.post(data, **kwargs)
 
@@ -480,6 +529,7 @@ class APIAdminGroups(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminPermissions,
             APIAdminTiers,
+            APIAdminFees
         )
         super().__init__(client, endpoint, filters)
 
@@ -613,7 +663,6 @@ class APIAdminMetricPoints(ResourceList):
 
 
 class APIAdminAuth(Resource):
-
     @classmethod
     def get_resource_name(cls):
         return 'auth'
@@ -639,6 +688,26 @@ class APIAdminAuth(Resource):
         response = self.post(data, 'register', **kwargs)
         return response
 
+    def deactivate(self, user, **kwargs):
+        return self.post(user=user, resource_id='deactivate', **kwargs)
+
+    def deactivate_verify(self, key, **kwargs):
+        return self.post(key=key, resource_id='deactivate/verify', **kwargs)
+
+    def password_reset(self, user, **kwargs):
+        return self.post(user=user, resource_id='password/reset', **kwargs)
+
+    def password_reset_confirm(
+            self, new_password1, new_password2, uid, token, **kwargs):
+        return self.post(
+            new_password1=new_password1,
+            new_password2=new_password2,
+            uid=uid,
+            token=token,
+            resource_id='password/reset/confirm'
+            **kwargs
+        )
+
 
 class APIAdminCompanyAddress(Resource):
     def __init__(self, client, endpoint, filters=None):
@@ -647,3 +716,66 @@ class APIAdminCompanyAddress(Resource):
     @classmethod
     def get_resource_name(cls):
         return 'address'
+
+
+class APIAdminSearch(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'search'
+
+
+class APIAdminServices(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint='', filters=None):
+        self.resources = (APIAdminPermissions,)
+
+        super().__init__(client, endpoint, filters)
+
+    def create(self, name, url, **kwargs):
+        return super().create(name=name, url=url, **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'services'
+
+
+class APIAdminVersions(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'versions'
+
+
+class APIAdminLegalTerms(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint='', filters=None):
+        self.resources = (APIAdminVersions,)
+
+        super().__init__(client, endpoint, filters)
+
+    def create(self, name, **kwargs):
+        return super().create(name=name, **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'legal-terms'
+
+
+class APIAdminAuthenticatorRules(ResourceList):
+    def create(self, type, durability, authenticator_types, **kwargs):
+        return super().create(
+            type=type,
+            durability=durability,
+            authenticator_types=authenticator_types,
+            **kwargs
+        )
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'authenticator-rules'
+
+
+class APIAdminAccessControlRules(ResourceList):
+    def create(self, action, type, value, **kwargs):
+        return super().create(action=action, type=type, value=value, **kwargs)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'access-control-rules'
