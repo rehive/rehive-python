@@ -168,8 +168,8 @@ class APIAuthTokens(Resource):
 
 
 class APIAuthenticators(ResourceList):
-    def create(self, type, details, **kwargs):
-        return super().create(type=type, details=details, **kwargs)
+    def create(self, type, **kwargs):
+        return super().create(type=type, **kwargs)
 
     @classmethod
     def get_resource_name(cls):
@@ -183,21 +183,6 @@ class APIAuthMFA(Resource, ResourceCollection):
         super().__init__(client, endpoint, filters)
 
         self.create_resources(self.resources)
-
-    def enable_sms(self, mobile):
-        data = {
-            "mobile": mobile
-        }
-        return self.post(data, 'sms/send')
-
-    def authorize_token(self, **kwargs):
-        return self.post({}, 'token', **kwargs)
-
-    def verify(self, token):
-        data = {
-            "token": token
-        }
-        return self.post(data, 'verify')
 
     def deliver(self, **kwargs):
         return self.post(resource_id='deliver', **kwargs)

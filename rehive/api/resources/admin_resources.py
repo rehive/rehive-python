@@ -204,10 +204,7 @@ class APIAdminMobiles(ResourceList):
 
 class APIAdminTransactions(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (
-            APIAdminWebhooks,
-            APIAdminTransactionMessages
-        )
+        self.resources = (APIAdminTransactionMessages,)
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
@@ -415,6 +412,7 @@ class APIAdminBankAccounts(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'bank-accounts'
+
 
 class APIAdminWalletAccounts(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
@@ -735,9 +733,6 @@ class APIAdminServices(ResourceList, ResourceCollection):
     def create(self, name, url, **kwargs):
         return super().create(name=name, url=url, **kwargs)
 
-    def put(self, name, url, **kwargs):
-        return super().put(name=name, url=url, **kwargs)
-
     @classmethod
     def get_resource_name(cls):
         return 'services'
@@ -748,6 +743,7 @@ class APIAdminVersions(ResourceList):
     def get_resource_name(cls):
         return 'versions'
 
+
 class APIAdminLegalTerms(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None):
         self.resources = (APIAdminVersions,)
@@ -756,9 +752,6 @@ class APIAdminLegalTerms(ResourceList, ResourceCollection):
 
     def create(self, name, **kwargs):
         return super().create(name=name, **kwargs)
-
-    def put(self, name, **kwargs):
-        return super().put(name=name, **kwargs)
 
     @classmethod
     def get_resource_name(cls):
@@ -774,13 +767,6 @@ class APIAdminAuthenticatorRules(ResourceList):
             **kwargs
         )
 
-    def put(self, durability, authenticator_types, **kwargs):
-        return super().put(
-            durability=durability,
-            authenticator_types=authenticator_types,
-            **kwargs
-        )
-
     @classmethod
     def get_resource_name(cls):
         return 'authenticator-rules'
@@ -789,9 +775,6 @@ class APIAdminAuthenticatorRules(ResourceList):
 class APIAdminAccessControlRules(ResourceList):
     def create(self, action, type, value, **kwargs):
         return super().create(action=action, type=type, value=value, **kwargs)
-
-    def put(self, action, type, value, **kwargs):
-        return super().put(action=action, type=type, value=value, **kwargs)
 
     @classmethod
     def get_resource_name(cls):
