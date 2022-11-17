@@ -1,4 +1,6 @@
 import re
+from io import BufferedReader
+
 import copy
 from urllib.parse import urlparse
 from urllib.parse import urljoin
@@ -23,18 +25,10 @@ class Resource(object):
         # Allow us to parse through arbitrary request arguments
         if data is None:
             data = {}
-        request_kwargs = {}
-        if 'file' in kwargs:
-            request_kwargs['files'] = {
-                'file': (open(kwargs.get('file'), 'rb'))
-            }
-            kwargs.pop('file', None)
+
+        data, files = self._handle_file_data(**data, **kwargs)
         # We need this flag to force non-json on file uploads
-        json = True
-        if 'json' in kwargs:
-            json = kwargs.get('json')
-            kwargs.pop('json', None)
-        data = {**data, **kwargs}
+        json = not bool(files) if data.get('json') is None else data.pop('json')
         url = self._build_url(resource_id)
         response = self.client.post(
             url,
@@ -42,29 +36,37 @@ class Resource(object):
             json=json,
             idempotent_key=idempotent_key,
             timeout=timeout,
-            **request_kwargs
+            files=files
         )
         return self._handle_resource_data(response)
 
     def put(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
-        data = kwargs
         url = self._build_url(resource_id)
+        data, files = self._handle_file_data(**kwargs)
+        # We need this flag to force non-json on file uploads
+        json = not bool(files) if data.get('json') is None else data.pop('json')
         response = self.client.put(
             url,
             data,
+            json=json,
             idempotent_key=idempotent_key,
-            timeout=timeout
+            timeout=timeout,
+            files=files
         )
         return self._handle_resource_data(response)
 
     def patch(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
-        data = kwargs
         url = self._build_url(resource_id)
+        data, files = self._handle_file_data(**kwargs)
+        # We need this flag to force non-json on file uploads
+        json = not bool(files) if data.get('json') is None else data.pop('json')
         response = self.client.patch(
             url,
             data,
+            json=json,
             idempotent_key=idempotent_key,
-            timeout=timeout
+            timeout=timeout,
+            files=files
         )
         return self._handle_resource_data(response)
 
@@ -186,6 +188,17 @@ class Resource(object):
         self.has_been_hydrated = True
 
         return return_data
+
+    def _handle_file_data(self, **kwargs):
+        data = {}
+        files = {}
+        for key, val in kwargs.items():
+            if isinstance(val, BufferedReader):
+                files[key] = val
+            else:
+                data[key] = val
+
+        return data, files
 
 
 class ResourceList(Resource):
