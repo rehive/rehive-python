@@ -41,9 +41,8 @@ class Resource(object):
         return self._handle_resource_data(response)
 
     def put(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
-        data = kwargs
         url = self._build_url(resource_id)
-        data, files = self._handle_file_data(**data)
+        data, files = self._handle_file_data(**kwargs)
         # We need this flag to force non-json on file uploads
         json = not bool(files) if data.get('json') is None else data.pop('json')
         response = self.client.put(
@@ -57,9 +56,8 @@ class Resource(object):
         return self._handle_resource_data(response)
 
     def patch(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
-        data = kwargs
         url = self._build_url(resource_id)
-        data, files = self._handle_file_data(**data)
+        data, files = self._handle_file_data(**kwargs)
         # We need this flag to force non-json on file uploads
         json = not bool(files) if data.get('json') is None else data.pop('json')
         response = self.client.patch(
