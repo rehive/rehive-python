@@ -277,20 +277,32 @@ class ResourceCollection(object):
 
     def create_resources(self, resources):
         for resource in resources:
-            setattr(self,
+            if not hasattr(self, self._sanitize_resource_name(resource.get_resource_name())):
+                setattr(
+                    self,
                     self._sanitize_resource_name(
-                        resource.get_resource_name()),
-                    resource(self.client, self.endpoint))
+                        resource.get_resource_name()
+                    ),
+                    resource(self.client, self.endpoint)
+                )
 
     def obj(self, resource_identifiter):
         return self.object(resource_identifiter)
 
     def object(self, resource_identifiter):
-        resource_object = copy.copy(self)
-        resource_object._set_resource_identifier(resource_identifiter)
-        resource_object._set_endpoint(resource_object.endpoint + resource_object.resource_identifier)
-        resource_object.create_resources(resource_object.resources)
-        return resource_object
+        """
+        Function takes in a resource and an identifier and turns the .obj instance into a reference
+        of the current Resource class
+
+        Example: admin.groups.object('user') -> AdminGroups() class instance with the 'user' identifier attached
+
+        It also appends any sub resources to the class such as AdminPermissions etc
+        """
+        self._set_resource_identifier(resource_identifiter)
+        # if not self.endpoint.contains(self.resource_identifier):
+        self._set_endpoint(self.endpoint + self.resource_identifier)
+        self.create_resources(self.resources)
+        return self
 
     def _sanitize_resource_name(self, string):
         return string.replace('-', '_')
