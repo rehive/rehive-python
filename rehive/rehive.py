@@ -12,6 +12,8 @@ from .api.resources.company_resources import APICompany
 from .api.resources.export_resources import APIExports
 from .api.resources.metric_resources import APIMetrics
 from .api.resources.account_definition_resources import APIAccountDefinitions
+from .api.resources.document_type_resources import APIDocumentTypes
+from .api.resources.group_resources import APIGroups
 
 
 class Rehive:
@@ -38,3 +40,5 @@ class Rehive:
         self.exports = APIExports(self.client)
         self.metrics = APIMetrics(self.client)
         self.public = PublicResources(self.client)
+        self.document_types = APIDocumentTypes(self.client)
+        self.groups = APIGroups(self.client)

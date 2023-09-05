@@ -61,8 +61,6 @@ class APIUserMobiles(Resource):
 
 
 class APIBankAccounts(ResourceList):
-    def __init__(self, client, endpoint, filters=None):
-        super(APIBankAccounts, self).__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
@@ -114,8 +112,6 @@ class APICryptoAccounts(ResourceList):
 
 
 class APIDocuments(ResourceList):
-    def __init__(self, client, endpoint, filters=None):
-        super(APIDocuments, self).__init__(client, endpoint, filters)
 
     def upload(self, document_type, file, **kwargs):
         return super().create(

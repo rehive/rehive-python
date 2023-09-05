@@ -204,7 +204,7 @@ class Resource(object):
 class ResourceList(Resource):
 
     def __init__(self, client, endpoint, filters=None):
-        super(ResourceList, self).__init__(client, endpoint, filters)
+        super().__init__(client, endpoint, filters)
         self.next = None
         self.previous = None
         self._count = 0
@@ -277,10 +277,13 @@ class ResourceCollection(object):
 
     def create_resources(self, resources):
         for resource in resources:
-            setattr(self,
-                    self._sanitize_resource_name(
-                        resource.get_resource_name()),
-                    resource(self.client, self.endpoint))
+            setattr(
+                self,
+                self._sanitize_resource_name(
+                    resource.get_resource_name()
+                ),
+                resource(self.client, self.endpoint)
+            )
 
     def obj(self, resource_identifiter):
         return self.object(resource_identifiter)
@@ -288,7 +291,9 @@ class ResourceCollection(object):
     def object(self, resource_identifiter):
         resource_object = copy.copy(self)
         resource_object._set_resource_identifier(resource_identifiter)
-        resource_object._set_endpoint(resource_object.endpoint + resource_object.resource_identifier)
+        resource_object._set_endpoint(
+            resource_object.endpoint + resource_object.resource_identifier
+        )
         resource_object.create_resources(resource_object.resources)
         return resource_object
 

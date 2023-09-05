@@ -9,7 +9,7 @@ class PublicResources(ResourceList, ResourceCollection):
             APILegalTerms,
             APICompanies
         )
-        super(PublicResources, self).__init__(client, self.endpoint)
+        super().__init__(client, self.endpoint)
         self.create_resources(self.resources)
 
     @classmethod
@@ -26,7 +26,6 @@ class APIVersions(ResourceList):
 class APILegalTerms(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None):
         self.resources = (APIVersions,)
-
         super().__init__(client, endpoint, filters)
 
     @classmethod
@@ -43,7 +42,6 @@ class APIGroups(ResourceList):
 class APICompanies(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None):
         self.resources = (APIGroups, APILegalTerms)
-
         super().__init__(client, endpoint, filters)
 
     @classmethod

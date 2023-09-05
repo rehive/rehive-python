@@ -4,7 +4,7 @@ from .base_resources import Resource, ResourceCollection, ResourceList
 class APIAccounts(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None, resource_identifier=None):
         self.resources = (APIAdminCurrencies,)
-        super(APIAccounts, self).__init__(client, endpoint, filters)
+        super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
     @classmethod
@@ -13,8 +13,6 @@ class APIAccounts(ResourceList, ResourceCollection):
 
 
 class APIAdminCurrencies(ResourceList):
-    def __init__(self, client, endpoint, filters=None):
-        super(APIAdminCurrencies, self).__init__(client, endpoint, filters)
 
     def make_active_currency(self, code):
         return self.patch(code, active=True)

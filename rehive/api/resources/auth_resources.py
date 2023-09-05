@@ -13,7 +13,7 @@ class AuthResources(Resource, ResourceCollection):
             APIAuthTokens,
             APIAuthMFA
         )
-        super(AuthResources, self).__init__(client, self.endpoint)
+        super().__init__(client, self.endpoint)
         self.create_resources(self.resources)
 
     def login(self, user, company, password, **kwargs):

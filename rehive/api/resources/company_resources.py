@@ -9,7 +9,7 @@ class APICompany(Resource, ResourceCollection):
             APIBankAccount,
             APIBankAccounts
         )
-        super(APICompany, self).__init__(client, endpoint, filters)
+        super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
 
     @classmethod
