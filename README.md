@@ -69,7 +69,7 @@ rehive.admin.currencies.get_previous()
 ```
 
 
-## Exception And Error Handling
+### Exception And Error Handling
 
 ```python
 from rehive import APIException
@@ -81,8 +81,28 @@ except APIException as e:
   print(e.data) # Any custom error messages and data returned from Rehive
 ```
 
-## Idempotent requests
+### Idempotent requests
 
 ```python
 rehive.user.update(last_name='test7777', idempotent_key='{UNIQUE_KEY}')
+```
+
+## Development
+
+Generate a python package.
+
+```shell
+python setup.py sdist
+```
+
+Install `twine` if you have not done so already.
+
+```shell
+pip install twine
+```
+
+Upload the python package:
+
+```shell
+twine upload dist/*
 ```
