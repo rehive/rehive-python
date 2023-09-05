@@ -602,9 +602,7 @@ class APIAdminAccountDefinitionGroupCurrencies(
 
 class APIAdminDevices(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (
-            APIAdminDeviceApps,
-        )
+        self.resources = (APIAdminDeviceApps,)
         super().__init__(client, endpoint, filters)
 
     @classmethod
@@ -761,6 +759,8 @@ class APIAdminAccessControlRules(ResourceList):
 
 
 class APIAdminDocumentTypes(ResourceList):
+    def __init__(self, client, endpoint='', filters=None):
+        super().__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
