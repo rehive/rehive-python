@@ -19,7 +19,7 @@ class UserResources(Resource, ResourceCollection):
             APIWalletAccounts,
             APILegalTerms
         )
-        super(UserResources, self).__init__(client, self.endpoint)
+        super().__init__(client, self.endpoint)
         self.create_resources(self.resources)
 
     @classmethod
@@ -97,7 +97,7 @@ class APIWalletAccounts(ResourceList, ResourceCollection):
 
 class APICryptoAccounts(ResourceList):
     def __init__(self, client, endpoint, filters=None):
-        super(APICryptoAccounts, self).__init__(client, endpoint, filters)
+        super().__init__(client, endpoint, filters)
 
     def create(self, address, type, **kwargs):
         return super().create(
@@ -131,7 +131,7 @@ class APIDevices(ResourceList, ResourceCollection):
         self.resources = (
             APIDeviceApps,
         )
-        super(APIDevices, self).__init__(client, endpoint, filters)
+        super().__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):

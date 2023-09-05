@@ -2,6 +2,8 @@ from .base_resources import ResourceList
 
 
 class APITransactions(ResourceList):
+    def __init__(self, client, endpoint='', filters=None):
+        super().__init__(client, endpoint, filters)
 
     def get_totals(self, **kwargs):
         response = self.get('totals/', **kwargs)
@@ -38,6 +40,8 @@ class APITransactions(ResourceList):
 
 
 class APITransactionCollections(ResourceList):
+    def __init__(self, client, endpoint='', filters=None):
+        super().__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
