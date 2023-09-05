@@ -33,14 +33,12 @@ class APIRequirementItems(ResourceList):
 
     @classmethod
     def get_resource_name(cls):
-        return 'requirement-items'
+        return 'items'
 
 
 class APIRequirementSets(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (
-            APIRequirementItems
-        )
+        self.resources = (APIRequirementItems,)
         super().__init__(client, endpoint, filters)
 
     @classmethod
@@ -54,7 +52,7 @@ class APITiers(ResourceList, ResourceCollection):
             APIFees,
             APIRequirements,
             APILimits,
-            APIRequirementSets
+            APIRequirementSets,
         )
         super().__init__(client, endpoint, filters)
 

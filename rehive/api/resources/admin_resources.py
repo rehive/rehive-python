@@ -299,7 +299,7 @@ class APIAdminCompany(Resource, ResourceCollection):
         self.resources = (
             APIAdminSettings,
             APIAdminCompanyAddress,
-            APIAdminCompanyLinks
+            APIAdminCompanyLinks,
         )
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -440,7 +440,7 @@ class APIAdminTiers(ResourceList, ResourceCollection):
             APIAdminFees,
             APIAdminRequirements,
             APIAdminLimits,
-            APIAdminRequirementSets
+            APIAdminRequirementSets,
         )
         super().__init__(client, endpoint, filters)
 
@@ -456,14 +456,12 @@ class APIAdminRequirementItems(ResourceList):
 
     @classmethod
     def get_resource_name(cls):
-        return 'requirement-items'
+        return 'items'
 
 
 class APIAdminRequirementSets(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (
-            APIAdminRequirementItems
-        )
+        self.resources = (APIAdminRequirementItems,)
         super().__init__(client, endpoint, filters)
 
     @classmethod
@@ -516,7 +514,7 @@ class APIAdminGroups(ResourceList, ResourceCollection):
         self.resources = (
             APIAdminPermissions,
             APIAdminTiers,
-            APIAdminFees
+            APIAdminFees,
         )
         super().__init__(client, endpoint, filters)
 
