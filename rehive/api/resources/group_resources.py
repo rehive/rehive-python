@@ -64,7 +64,7 @@ class APITiers(ResourceList, ResourceCollection):
 
 
 class APIGroups(ResourceList, ResourceCollection):
-    def __init__(self, client, endpoint, filters=None):
+    def __init__(self, client, endpoint='', filters=None):
         self.resources = (
             APIPermissions,
             APITiers,
