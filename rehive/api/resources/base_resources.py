@@ -109,11 +109,6 @@ class Resource(object):
             else:
                 endpoint = self.endpoint
             endpoint = self._append_trailing_slash(endpoint)
-            if (self.resource_identifier is not None):
-                endpoint = urllib.parse.urljoin(
-                    endpoint, self.resource_identifier
-                )
-            endpoint = self._append_trailing_slash(endpoint)
         if kwargs.get('filters'):
             filters = kwargs.get('filters')
             filters_clean = {}
