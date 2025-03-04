@@ -1,11 +1,13 @@
 class APIException(Exception):
-    def __init__(self, message, status_code=None, data=None):
+    def __init__(self, message, status_code=None, data=None, result=None):
 
         super(APIException, self).__init__(message)
 
         self.status_code = status_code
         if data is not None:
             self.data = data
+        if result is not None:
+            self.result = result
 
 
 class NoPaginationException(Exception):

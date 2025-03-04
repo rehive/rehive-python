@@ -123,18 +123,30 @@ class Client:
 
             if not result.ok:
                 if result.status_code == 404:
-                    raise APIException('Not found: ' + url, result.status_code)
+                    raise APIException(
+                        'Not found: ' + url,
+                        status_code=result.status_code,
+                        result=result
+                    )
                 if result.status_code == 500:
-                    raise APIException('Internal server error: ' + url, result.status_code)
+                    raise APIException(
+                        'Internal server error: ' + url,
+                        status_code=result.status_code,
+                        result=result
+                    )
                 try:
                     error_data = result.json()
-                    raise APIException(error_data.get(
-                            'message', 'General error'),
-                            result.status_code, error_data)
+                    raise APIException(
+                        error_data.get('message', 'General error'),
+                        status_code=result.status_code,
+                        data=error_data,
+                        result=result
+                    )
                 except JSONDecodeError:
                     APIException(
                         'JSON Decode error',
-                        result.status_code
+                        status_code=result.status_code,
+                        result=result
                     )
 
             response_json = self._handle_result(result)
