@@ -16,12 +16,12 @@ class Resource(object):
         self.resource_identifier = ''
         self.has_been_hydrated = False
 
-    def get(self, resource_id=None, timeout=None, **kwargs):
+    def get(self, resource_id=None, timeout=None, headers=None, **kwargs):
         url = self._build_url(resource_id, **kwargs)
-        response = self.client.get(url, timeout=timeout)
+        response = self.client.get(url, timeout=timeout, headers=headers)
         return self._handle_resource_data(response)
 
-    def post(self, data=None, resource_id=None, idempotent_key=None, timeout=None, **kwargs):
+    def post(self, data=None, resource_id=None, idempotent_key=None, timeout=None, headers=None, **kwargs):
         # Allow us to parse through arbitrary request arguments
         if data is None:
             data = {}
@@ -36,11 +36,12 @@ class Resource(object):
             json=json,
             idempotent_key=idempotent_key,
             timeout=timeout,
+            headers=headers,
             files=files
         )
         return self._handle_resource_data(response)
 
-    def put(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
+    def put(self, resource_id='', idempotent_key=None, timeout=None, headers=None, **kwargs):
         url = self._build_url(resource_id)
         data, files = self._handle_file_data(**kwargs)
         # We need this flag to force non-json on file uploads
@@ -51,11 +52,12 @@ class Resource(object):
             json=json,
             idempotent_key=idempotent_key,
             timeout=timeout,
+            headers=headers,
             files=files
         )
         return self._handle_resource_data(response)
 
-    def patch(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
+    def patch(self, resource_id='', idempotent_key=None, timeout=None, headers=None, **kwargs):
         url = self._build_url(resource_id)
         data, files = self._handle_file_data(**kwargs)
         # We need this flag to force non-json on file uploads
@@ -66,33 +68,36 @@ class Resource(object):
             json=json,
             idempotent_key=idempotent_key,
             timeout=timeout,
+            headers=headers,
             files=files
         )
         return self._handle_resource_data(response)
 
-    def delete(self, resource_id='', timeout=None, **kwargs):
+    def delete(self, resource_id='', timeout=None, headers=None, **kwargs):
         data = kwargs
         url = self._build_url(resource_id)
-        response = self.client.delete(url, data, timeout=timeout)
+        response = self.client.delete(url, data, timeout=timeout, headers=headers)
         return self._handle_resource_data(response)
 
-    def options(self, resource_id='', timeout=None, **kwargs):
+    def options(self, resource_id='', timeout=None, headers=None, **kwargs):
         url = self._build_url(resource_id)
-        response = self.client.options(url, timeout=timeout)
+        response = self.client.options(url, timeout=timeout, headers=headers)
         return self._handle_resource_data(response)
 
-    def update(self, resource_id='', idempotent_key=None, timeout=None, **kwargs):
+    def update(self, resource_id='', idempotent_key=None, timeout=None, headers=None, **kwargs):
         return self.patch(
             resource_id,
             idempotent_key=idempotent_key,
             timeout=timeout,
+            headers=headers,
             **kwargs
         )
 
-    def create(self, idempotent_key=None, timeout=None, **kwargs):
+    def create(self, idempotent_key=None, timeout=None, headers=None, **kwargs):
         return self.post(
             idempotent_key=idempotent_key,
             timeout=timeout,
+            headers=headers,
             **kwargs
         )
 
@@ -209,25 +214,25 @@ class ResourceList(Resource):
         self.previous = None
         self._count = 0
 
-    def get(self, endpoint=None, **kwargs):
+    def get(self, endpoint=None, timeout=None, headers=None, **kwargs):
         if endpoint:
             endpoint = str(endpoint)
         url = self._build_url(endpoint, **kwargs)
-        response = self.client.get(url)
+        response = self.client.get(url, timeout=timeout, headers=headers)
         return self._handle_pagination_data(response)
 
-    def get_next(self, **kwargs):
+    def get_next(self, timeout=None, headers=None, **kwargs):
         if self.next is None:
             raise NoNextException
         url = self._build_url(pagination=self.next, **kwargs)
-        response = self.client.get(url)
+        response = self.client.get(url, timeout=timeout, headers=headers)
         return self._handle_pagination_data(response)
 
-    def get_previous(self, **kwargs):
+    def get_previous(self, timeout=None, headers=None, **kwargs):
         if self.previous is None:
             raise NoPreviousException
         url = self._build_url(pagination=self.previous, **kwargs)
-        response = self.client.get(url)
+        response = self.client.get(url, timeout=timeout, headers=headers)
         return self._handle_pagination_data(response)
 
     @property
