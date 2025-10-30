@@ -126,7 +126,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminKyc,
             APIAdminDevices,
             APIAdminBankAccounts,
-            APIAdminWalletAccounts
+            APIAdminWalletAccounts,
+            APIAdminLegalTerms
         }
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
