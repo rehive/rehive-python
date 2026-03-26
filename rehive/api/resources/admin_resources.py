@@ -127,7 +127,8 @@ class APIAdminUsers(ResourceList, ResourceCollection):
             APIAdminDevices,
             APIAdminBankAccounts,
             APIAdminWalletAccounts,
-            APIAdminLegalTerms
+            APIAdminLegalTerms,
+            APIAdminUserMessages,
         }
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -135,6 +136,15 @@ class APIAdminUsers(ResourceList, ResourceCollection):
     @classmethod
     def get_resource_name(cls):
         return 'users'
+
+
+class APIAdminUserMessages(ResourceList):
+    def create(self, message, **kwargs):
+        return super().create(**{'message': message, **kwargs})
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'messages'
 
 
 class APIAdminDocuments(ResourceList):
