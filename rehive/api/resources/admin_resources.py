@@ -31,7 +31,9 @@ class AdminResources(ResourceCollection):
             APIAdminLegalTerms,
             APIAdminAuthenticatorRules,
             APIAdminAccessControlRules,
-            APIAdminDocumentTypes
+            APIAdminDocumentTypes,
+            APIAdminAlerts,
+            APIAdminRequests,
         )
         self.create_resources(self.resources)
 
@@ -774,3 +776,15 @@ class APIAdminDocumentTypes(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'document-types'
+
+
+class APIAdminAlerts(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'alerts'
+
+
+class APIAdminRequests(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'requests'
