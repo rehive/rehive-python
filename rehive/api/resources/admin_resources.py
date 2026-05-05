@@ -34,6 +34,8 @@ class AdminResources(ResourceCollection):
             APIAdminDocumentTypes,
             APIAdminAlerts,
             APIAdminRequests,
+            APIAdminPolicies,
+            APIAdminPolicyLogs,
         )
         self.create_resources(self.resources)
 
@@ -788,3 +790,25 @@ class APIAdminRequests(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'requests'
+
+
+class APIAdminPolicies(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint='', filters=None):
+        self.resources = (APIAdminPolicyEffects,)
+        super().__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'policies'
+
+
+class APIAdminPolicyEffects(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'effects'
+
+
+class APIAdminPolicyLogs(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'policy-logs'
