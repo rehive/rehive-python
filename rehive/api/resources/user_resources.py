@@ -1,4 +1,5 @@
 from .base_resources import ResourceList, Resource, ResourceCollection
+from .helpers import flatten_files
 from .public_resources import APILegalTerms
 
 
@@ -113,10 +114,35 @@ class APICryptoAccounts(ResourceList):
 
 class APIDocuments(ResourceList):
 
-    def upload(self, document_type, file, **kwargs):
+    def upload(self, document_type, file=None, files=None, **kwargs):
+        """
+        Upload a document.
+
+        Single-file (legacy):
+            upload(type_id, file=open('id.jpg', 'rb'))
+
+        Multi-file (aligns with DocumentType.file_rules):
+            upload(type_id, files=[
+                {'file': open('front.jpg', 'rb'), 'label': 'front'},
+                {'file': open('back.jpg',  'rb'), 'label': 'back',
+                 'description': 'Back of ID'},
+            ])
+
+        Skip an optional rule position by passing None at that index:
+            upload(type_id, files=[entry0, None, entry2])
+        """
+        if (file is None) == (files is None):
+            raise ValueError(
+                "Provide exactly one of `file` or `files`."
+            )
+
+        if files is not None:
+            kwargs.update(flatten_files(files))
+        else:
+            kwargs['file'] = file
+
         return super().create(
             document_type=document_type,
-            file=file,
             json=False,
             **kwargs
         )
