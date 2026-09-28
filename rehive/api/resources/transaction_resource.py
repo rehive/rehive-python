@@ -1,8 +1,9 @@
-from .base_resources import ResourceList
+from .base_resources import ResourceList, ResourceCollection
 
 
-class APITransactions(ResourceList):
+class APITransactions(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None):
+        self.resources = (APITransactionMessages,)
         super().__init__(client, endpoint, filters)
 
     def get_totals(self, **kwargs):
@@ -39,6 +40,13 @@ class APITransactions(ResourceList):
         return 'transactions'
 
 
+class APITransactionMessages(ResourceList):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'messages'
+
+
 class APITransactionCollections(ResourceList):
     def __init__(self, client, endpoint='', filters=None):
         super().__init__(client, endpoint, filters)
@@ -46,3 +54,12 @@ class APITransactionCollections(ResourceList):
     @classmethod
     def get_resource_name(cls):
         return 'transaction-collections'
+
+
+class APISubtypes(ResourceList):
+    def __init__(self, client, endpoint='', filters=None):
+        super().__init__(client, endpoint, filters)
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'subtypes'
