@@ -7,7 +7,8 @@ class APICompany(Resource, ResourceCollection):
             APIBanks,
             APICurrencies,
             APIBankAccount,
-            APIBankAccounts
+            APIBankAccounts,
+            APIWalletAccounts,
         )
         super().__init__(client, endpoint, filters)
         self.create_resources(self.resources)
@@ -43,3 +44,10 @@ class APIBankAccounts(Resource):
     @classmethod
     def get_resource_name(cls):
         return 'bank-accounts'
+
+
+class APIWalletAccounts(ResourceList):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'wallet-accounts'

@@ -39,9 +39,15 @@ class APIGroups(ResourceList):
         return 'groups'
 
 
+class APIOAuthClients(ResourceList):
+    @classmethod
+    def get_resource_name(cls):
+        return 'oauth-clients'
+
+
 class APICompanies(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint='', filters=None):
-        self.resources = (APIGroups, APILegalTerms)
+        self.resources = (APIGroups, APILegalTerms, APIOAuthClients)
         super().__init__(client, endpoint, filters)
 
     @classmethod

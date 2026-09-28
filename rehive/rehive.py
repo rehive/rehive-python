@@ -5,15 +5,17 @@ from .api.rehive_util import RehiveUtil
 from .api.resources.public_resources import PublicResources
 from .api.resources.user_resources import UserResources
 from .api.resources.transaction_resource import (
-    APITransactions, APITransactionCollections
+    APITransactions, APITransactionCollections, APISubtypes
 )
-from .api.resources.accounts_resources import APIAccounts
+from .api.resources.accounts_resources import (
+    APIAccounts, APIAccountCurrencies, APIStatements
+)
 from .api.resources.company_resources import APICompany
 from .api.resources.export_resources import APIExports
 from .api.resources.metric_resources import APIMetrics
 from .api.resources.account_definition_resources import APIAccountDefinitions
 from .api.resources.document_type_resources import APIDocumentTypes
-from .api.resources.group_resources import APIGroups
+from .api.resources.group_resources import APIGroups, APIPermissions
 
 
 class Rehive:
@@ -42,3 +44,7 @@ class Rehive:
         self.public = PublicResources(self.client)
         self.document_types = APIDocumentTypes(self.client)
         self.groups = APIGroups(self.client)
+        self.account_currencies = APIAccountCurrencies(self.client)
+        self.statements = APIStatements(self.client)
+        self.subtypes = APISubtypes(self.client)
+        self.permissions = APIPermissions(self.client)

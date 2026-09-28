@@ -2,6 +2,8 @@ from .base_resources import ResourceList, ResourceCollection
 
 
 class APIPermissions(ResourceList):
+    def __init__(self, client, endpoint='', filters=None):
+        super().__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
@@ -67,6 +69,7 @@ class APIGroups(ResourceList, ResourceCollection):
             APIPermissions,
             APITiers,
             APIFees,
+            APILimits,
         )
         super().__init__(client, endpoint, filters)
 

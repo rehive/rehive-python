@@ -10,6 +10,7 @@ class UserResources(Resource, ResourceCollection):
         self.endpoint = ''
         self.resources = (
             APIUserAddress,
+            APIUserAddresses,
             APIUserEmail,
             APIUserMobiles,
             APIBankAccounts,
@@ -18,7 +19,8 @@ class UserResources(Resource, ResourceCollection):
             APIDevices,
             APIDeviceApps,
             APIWalletAccounts,
-            APILegalTerms
+            APILegalTerms,
+            APIUserMessages,
         )
         super().__init__(client, self.endpoint)
         self.create_resources(self.resources)
@@ -33,6 +35,27 @@ class APIUserAddress(Resource):
     @classmethod
     def get_resource_name(cls):
         return 'address'
+
+
+class APIUserAddresses(ResourceList):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'addresses'
+
+
+class APIUserMessages(ResourceList):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'messages'
+
+
+class APIAccountCurrencyLinks(ResourceList):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'account-currencies'
 
 
 class APIUserEmail(Resource):
@@ -61,7 +84,20 @@ class APIUserMobiles(Resource):
         return 'mobiles'
 
 
-class APIBankAccounts(ResourceList):
+class APIBankAccountDocuments(ResourceList):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'documents'
+
+
+class APIBankAccounts(ResourceList, ResourceCollection):
+    def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIAccountCurrencyLinks,
+            APIBankAccountDocuments,
+        )
+        super().__init__(client, endpoint, filters)
 
     @classmethod
     def get_resource_name(cls):
@@ -84,7 +120,10 @@ class APIWalletCurrencies(ResourceList):
 
 class APIWalletAccounts(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
-        self.resources = (APIWalletCurrencies,)
+        self.resources = (
+            APIWalletCurrencies,
+            APIAccountCurrencyLinks,
+        )
         super().__init__(client, endpoint, filters)
 
     def create(self, user, **kwargs):
@@ -96,8 +135,19 @@ class APIWalletAccounts(ResourceList, ResourceCollection):
         return 'wallet-accounts'
 
 
-class APICryptoAccounts(ResourceList):
+class APICryptoAccountAttestations(ResourceList):
+
+    @classmethod
+    def get_resource_name(cls):
+        return 'attestations'
+
+
+class APICryptoAccounts(ResourceList, ResourceCollection):
     def __init__(self, client, endpoint, filters=None):
+        self.resources = (
+            APIAccountCurrencyLinks,
+            APICryptoAccountAttestations,
+        )
         super().__init__(client, endpoint, filters)
 
     def create(self, address, type, **kwargs):
